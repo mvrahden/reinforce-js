@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "module": "commonjs",
+    "sourceMap": true,
+    "removeComments": true,
+    "rootDir": "./",
+    "outDir": "./",
+    "allowJs": true,
+    "declaration": false,
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "allowUnusedLabels": false
+  },
+  "include": [
+    "index.ts",
+    "src/*.ts",
+    "src/**/*.ts",
+    "test/*.ts",
+    "test/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

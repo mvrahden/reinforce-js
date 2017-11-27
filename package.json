@@ -1,0 +1,27 @@
+{
+  "name": "reinforce-ts",
+  "version": "1.0.0",
+  "description": "Reinforcement Learning Agents in Javascript (Dynamic Programming, Temporal Difference, Deep Q-Learning, Stochastic/Deterministic Policy Gradients). Ported, object-oriented and refactored version of Andrej Karpathy's reinforce-js (https://github.com/karpathy/reinforcejs)",
+  "main": "index.js",
+  "scripts": {
+    "compile": "tsc -p .",
+    "pretest": "npm run compile",
+    "test": "node"
+  },
+  "author": "Menno van Rahden",
+  "homepage": "https://github.com/mvrahden/reinforce-ts#readme",
+  "bugs": {
+    "url": "https://github.com/mvrahden/reinforce-ts/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mvrahden/reinforce-ts.git"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^2.6.1"
+  },
+  "dependencies": {
+    "recurrent-ts": "^1.0.6"
+  }
+}

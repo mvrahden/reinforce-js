@@ -1,0 +1,12 @@
+{
+  "extends": "./tslint-google.json",
+  "rules": {
+    "array-type": [
+      false
+    ],
+    "eofline": true,
+    "member-access": false,
+    "no-any": false,
+    "no-inferrable-types": false
+  }
+}
