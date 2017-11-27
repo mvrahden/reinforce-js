@@ -25,14 +25,15 @@ npm install --save reinforce-ts
 
 Currently exposed Classes:
 
-* R
-* Mat
-* RandMat
-* Graph
-* Net
-* LSTM
+* *Solver* - Generic Interface
+* *DQNSolver* - Concrete Solver
+* *Env* - Environment a Solver
+* *Opt* - Options a Solver
 
-These classes can be imported from this modules `index` file.
+These classes can be directly imported from this `npm` module, e.g.:
+```typescript
+import { Solver, Env } from 'reinforce-ts';
+```
 
 # Contribute
 
