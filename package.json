@@ -4,7 +4,7 @@
   "description": "Reinforcement Learning Agents in Javascript (Dynamic Programming, Temporal Difference, Deep Q-Learning, Stochastic/Deterministic Policy Gradients). Ported, object-oriented and refactored version of Andrej Karpathy's reinforce-js (https://github.com/karpathy/reinforcejs)",
   "main": "index.js",
   "scripts": {
-    "compile": "tsc -p .",
+    "prepare": "tsc -p .",
     "pretest": "npm run compile",
     "test": "node"
   },
