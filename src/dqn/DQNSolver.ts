@@ -1,8 +1,9 @@
-import { Net, Graph, Mat, RandMat, R } from 'recurrent-ts';
+import { Net, Graph, Mat, RandMat } from 'recurrent-ts';
 
-import { Solver } from "./Solver";
-import { Env } from "./Env";
-import { Opt } from './Opt';
+import { Solver } from "../Solver";
+import { Env } from "../Env";
+import { Opt } from '../Opt';
+import { RL } from '../utils/RL';
 
 export class DQNSolver extends Solver {
   private net: Net = new Net();
@@ -16,18 +17,19 @@ export class DQNSolver extends Solver {
   private expi: number;
   private exp: Array<any>;
   private tderror: number;
-  private env: Env;
-  private ns: number;
-  private na: number;
   private numHiddenUnits: number;
   private nh: number;
   private tdErrorClamp: number;
   private learningStepsPerIteration: number;
   private experienceSize: number;
   private experienceAddEvery: number;
+  
+  private ns: number;
+  private na: number;
   private alpha: number;
   private epsilon: number;
   private gamma: number;
+  private env: Env;
 
   constructor(env: Env, opt: Opt) {
     super();
@@ -106,11 +108,11 @@ export class DQNSolver extends Solver {
     // epsilon greedy policy
     let a = 0;
     if(Math.random() < this.epsilon) {
-      a = R.randi(0, this.na);
+      a = RL.randi(0, this.na);
     } else {
       // greedy wrt Q function
       const amat = this.forwardQ(this.net, s, false);
-      a = R.maxi(amat.w); // returns index of argmax action
+      a = RL.maxi(amat.w); // returns index of argmax action
     }
 
     // shift state memory
@@ -152,7 +154,7 @@ export class DQNSolver extends Solver {
 
       // sample some additional experience from replay memory and learn from it
       for (let k = 0; k < this.learningStepsPerIteration; k++) {
-        const ri = R.randi(0, this.exp.length); // todo: priority sweeps?
+        const ri = RL.randi(0, this.exp.length); // todo: priority sweeps?
         const e = this.exp[ri];
         this.learnFromTuple(e[0], e[1], e[2], e[3], e[4]);
       }
@@ -165,7 +167,7 @@ export class DQNSolver extends Solver {
 
       // compute the target Q value
       const tmat = this.forwardQ(this.net, s1, false);
-      const qmax = r0 + this.gamma * tmat.w[R.maxi(tmat.w)];
+      const qmax = r0 + this.gamma * tmat.w[RL.maxi(tmat.w)];
 
       // now predict
       const pred = this.forwardQ(this.net, s0, true);

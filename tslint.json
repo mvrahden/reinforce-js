@@ -7,6 +7,7 @@
     "eofline": true,
     "member-access": false,
     "no-any": false,
-    "no-inferrable-types": false
+    "no-inferrable-types": false,
+    "arrow-return-shorthand": false
   }
 }
