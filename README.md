@@ -9,6 +9,10 @@ In particular, the library currently includes:
 
 For further Information see the [reinforce-js](https://github.com/karpathy/reinforcejs) repository.
 
+# Work in Progress!
+Please be aware that this repository is still _under construction_.
+There are still classes to be added, e.g. *DPSolver*, *TDSolver*, *SimpleReinforcementSolver*, *RecurrentReinforcementSolver*, *DeterministPG* and their individual *Opts* and *Envs*
+
 # Dependencies
 
 This Library relies on the object-oriented [recurrent-ts](https://github.com/mvrahden/recurrent-ts) _Deep Recurrent Neural Network_ library.
