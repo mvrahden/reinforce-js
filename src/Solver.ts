@@ -1,4 +1,4 @@
-import { Opt } from "./Opt";
+import { Opt } from './Opt';
 
 export abstract class Solver {
   public abstract act(stateList:Array<any>):number;

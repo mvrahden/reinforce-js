@@ -3,24 +3,20 @@
     "target": "es6",
     "module": "commonjs",
     "sourceMap": true,
+    "declaration": true,
     "removeComments": true,
-    "rootDir": "./",
-    "outDir": "./",
-    "allowJs": true,
-    "declaration": false,
+    "rootDir": "./src/",
+    "outDir": "./dist/",
     "noImplicitAny": false,
     "strictNullChecks": false,
     "allowUnusedLabels": false
   },
   "include": [
-    "index.ts",
     "src/*.ts",
-    "src/**/*.ts",
-    "test/*.ts",
-    "test/**/*.ts"
+    "src/**/*.ts"
   ],
   "exclude": [
     "node_modules",
-    "build"
+    "dist"
   ]
 }
