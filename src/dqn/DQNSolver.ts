@@ -5,30 +5,30 @@ import { Env } from '../Env';
 import { Opt } from '../Opt';
 
 export class DQNSolver extends Solver {
-  private net: Net = new Net();
-  private lastG: Graph;
-  private a1: number | null = null;
-  private a0: number | null = null;
-  private s1: Mat | null = null;
-  private s0: Mat | null = null;
-  private r0: number | null = null;
-  private t: number;
-  private expi: number;
-  private exp: Array<any>;
-  private tderror: number;
-  private numHiddenUnits: number;
-  private nh: number;
-  private tdErrorClamp: number;
-  private learningStepsPerIteration: number;
-  private experienceSize: number;
-  private experienceAddEvery: number;
+  protected net: Net;
+  protected lastG: Graph;
+  protected a1: number | null = null;
+  protected a0: number | null = null;
+  protected s1: Mat | null = null;
+  protected s0: Mat | null = null;
+  protected r0: number | null = null;
+  protected t: number;
+  protected expi: number;
+  protected exp: Array<any>;
+  protected tderror: number;
+  protected numHiddenUnits: number;
+  protected nh: number;
+  protected tdErrorClamp: number;
+  protected learningStepsPerIteration: number;
+  protected experienceSize: number;
+  protected experienceAddEvery: number;
   
-  private ns: number;
-  private na: number;
-  private alpha: number;
-  private epsilon: number;
-  private gamma: number;
-  private env: Env;
+  protected ns: number;
+  protected na: number;
+  protected alpha: number;
+  protected epsilon: number;
+  protected gamma: number;
+  protected env: Env;
 
   constructor(env: Env, opt: Opt) {
     super();
