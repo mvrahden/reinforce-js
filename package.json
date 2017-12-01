@@ -2,6 +2,16 @@
   "name": "reinforce-ts",
   "version": "1.1.1",
   "description": "Reinforcement Learning Agents in Javascript (Dynamic Programming, Temporal Difference, Deep Q-Learning, Stochastic/Deterministic Policy Gradients). Ported, object-oriented and refactored version of Andrej Karpathy's reinforce-js (https://github.com/karpathy/reinforcejs)",
+  "keywords": [
+    "reinforcement learning",
+    "q-learning",
+    "temporal difference",
+    "sarsa",
+    "agent",
+    "recurrent",
+    "neural net",
+    "solver"
+  ],
   "main": "dist/index.js",
   "scripts": {
     "prepare": "tsc -p .",
@@ -22,6 +32,6 @@
     "typescript": "^2.6.1"
   },
   "dependencies": {
-    "recurrent-ts": "^1.2.0"
+    "recurrent-ts": "^1.2.1"
   }
 }

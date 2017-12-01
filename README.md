@@ -46,6 +46,10 @@ These classes can be directly imported from this `npm` module, e.g.:
 import { Solver, Env } from 'reinforce-ts';
 ```
 
+## Further Info
+
+The transpiled Javascript-target is `ES6`. The supported module format is `CommonJS`.
+
 # Contribute
 
 1. `Clone` this project to a working directory.
