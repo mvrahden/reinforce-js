@@ -20,9 +20,9 @@ This Library relies on the object-oriented _Deep Recurrent Neural Network_ libra
 * **GitHub**: [recurrent-ts](https://github.com/mvrahden/recurrent-ts)
 * **npm**: [recurrent-ts](https://www.npmjs.com/package/recurrent-ts)
 
-# Use as `npm`-Project Dependency
+# Use as Project Dependency
 
-## To install as dependency:
+## To install as a dependency:
 
 Download available `@npm`: [reinforce-ts](https://www.npmjs.com/package/reinforce-ts)
 
@@ -32,14 +32,14 @@ Install via command line:
 npm install --save reinforce-ts
 ```
 
-## To use the Library in Production:
+## Use the Library in Production:
 
-Currently exposed Classes:
+Currently exposed Classes (more to be expected soon):
 
-* `Solver` - Generic Interface
-* `DQNSolver` - Concrete Solver
-* `Env` - Environment a Solver
-* `Opt` - Options a Solver
+* `Solver` - Generic Solver Interface
+* `Env` - Generic *Environment* for a Solver
+* `Opt` - Generic *Options* for a Solver
+* `DQNSolver` - Concrete *Deep Q-Learning* Solver
 
 These classes can be directly imported from this `npm` module, e.g.:
 ```typescript
@@ -48,7 +48,7 @@ import { Solver, Env } from 'reinforce-ts';
 
 ## Further Info
 
-The transpiled Javascript-target is `ES6`. The supported module format is `CommonJS`.
+The transpiled Javascript-target is `ES6`, with a `CommonJS` module format.
 
 # Contribute
 
