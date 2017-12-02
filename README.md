@@ -1,5 +1,5 @@
 # REINFORCE-ts
-**REINFORCE-ts** is an object-oriented Typescript port of _Andrej Karpathy's_ Reinforcement Learning library that implements several common RL algorithms.
+**REINFORCE-ts** is an object-oriented Javascript (baked with [Typescript](https://github.com/Microsoft/TypeScript)) port of _Andrej Karpathy's_ Reinforcement Learning library that implements several common RL algorithms.
 In particular, the library currently includes:
 
 * **Dynamic Programming** methods
@@ -9,7 +9,7 @@ In particular, the library currently includes:
 
 For further Information see the [reinforce-js](https://github.com/karpathy/reinforcejs) repository.
 
-# Work in Progress!
+## Work in Progress
 Please be aware that this repository is still _under construction_. Changes are likely to happen.
 There are still classes to be added, e.g. *DPSolver*, *TDSolver*, *SimpleReinforcementSolver*, *RecurrentReinforcementSolver*, *DeterministPG* and their individual *Opts* and *Envs*
 
