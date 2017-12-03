@@ -6,7 +6,7 @@ import { Opt } from '../Opt';
 
 export class DQNSolver extends Solver {
   protected net: Net;
-  protected lastG: Graph;
+  protected lastGraph: Graph;
   protected a1: number | null = null;
   protected a0: number | null = null;
   protected s1: Mat | null = null;
@@ -23,8 +23,9 @@ export class DQNSolver extends Solver {
   protected experienceSize: number;
   protected experienceAddEvery: number;
   
-  protected ns: number;
-  protected na: number;
+  protected numberOfStates: number;
+  protected numberOfMaxActions: number;
+
   protected alpha: number;
   protected epsilon: number;
   protected gamma: number;
@@ -49,17 +50,17 @@ export class DQNSolver extends Solver {
 
   public reset():void {
     this.nh = this.numHiddenUnits; // number of hidden units
-    this.ns = this.env.getNumStates();
-    this.na = this.env.getMaxNumActions();
+    this.numberOfStates = this.env.getNumStates();
+    this.numberOfMaxActions = this.env.getMaxNumActions();
 
     // nets are hardcoded for now as key (str) -> Mat
     // not proud of this. better solution is to have a whole Net object
     // on top of Mats, but for now sticking with this
     this.net = new Net();
-    this.net.W1 = new RandMat(this.nh, this.ns, 0, 0.01);
+    this.net.W1 = new RandMat(this.nh, this.numberOfStates, 0, 0.01);
     this.net.b1 = new Mat(this.nh, 1);
-    this.net.W2 = new RandMat(this.na, this.nh, 0, 0.01);
-    this.net.b2 = new Mat(this.na, 1);
+    this.net.W2 = new RandMat(this.numberOfMaxActions, this.nh, 0, 0.01);
+    this.net.b2 = new Mat(this.numberOfMaxActions, 1);
 
     this.exp = []; // experience
     this.expi = 0; // where to insert
@@ -79,8 +80,8 @@ export class DQNSolver extends Solver {
     // save function
     const j = {
       nh: this.nh,
-      ns: this.ns,
-      na: this.na,
+      ns: this.numberOfStates,
+      na: this.numberOfMaxActions,
       net: Net.toJSON(this.net)
     };
     return j;
@@ -89,8 +90,8 @@ export class DQNSolver extends Solver {
   public fromJSON (json:{nh, ns, na, net}):void {
     // load function
     this.nh = json.nh;
-    this.ns = json.ns;
-    this.na = json.na;
+    this.numberOfStates = json.ns;
+    this.numberOfMaxActions = json.na;
     this.net = Net.fromJSON(json.net);
   }
 
@@ -101,47 +102,66 @@ export class DQNSolver extends Solver {
    */
   public act (stateList:Array<number>):number {
     // convert to a Mat column vector
-    const s = new Mat(this.ns, 1);
+    const s = new Mat(this.numberOfStates, 1);
     s.setFrom(stateList);
 
     // epsilon greedy policy
-    let a = 0;
-    if(Math.random() < this.epsilon) {
-      a = R.randi(0, this.na);
-    } else {
-      // greedy wrt Q function
-      const amat = this.forwardQ(this.net, s, false);
-      a = R.maxi(amat.w); // returns index of argmax action
-    }
+    const actionIndex: number = this.greedyActionPolicy(s);
 
-    // shift state memory
-    this.s0 = this.s1;
-    this.a0 = this.a1;
-    this.s1 = s;
-    this.a1 = a;
+    this.shiftStateMemory(s, actionIndex);
 
-    return a;
+    return actionIndex;
   }
 
-    private forwardQ(net: Net, s: Mat | null, needsBackprop: boolean) {
+    private greedyActionPolicy(s: Mat): number {
+      let actionIndex: number = 0;
+      if (Math.random() < this.epsilon) {
+        actionIndex = R.randi(0, this.numberOfMaxActions);
+      }
+      else {
+        // greedy wrt Q function
+        const actionMat = this.forwardQ(s, false);
+        actionIndex = R.maxi(actionMat.w); // returns index of argmax action
+      }
+      return actionIndex;
+    }
+
+    /**
+     * Determine Outputs based on Forward Feed
+     * @param net Network
+     * @param s Matrix with states
+     * @param needsBackprop 
+     * @return Matrix with predicted actions values
+     */
+    private forwardQ(s: Mat | null, needsBackprop: boolean): Mat {
       const graph = new Graph(needsBackprop);
-      const a1mat = graph.add(graph.mul(net.W1, s), net.b1);
+      const a1mat = graph.add(graph.mul(this.net.W1, s), this.net.b1);
       const h1mat = graph.tanh(a1mat);
-      const a2mat = graph.add(graph.mul(net.W2, h1mat), net.b2);
-      this.lastG = graph; // back this up. Kind of hacky isn't it
-      return a2mat;
+      const a2Mat = graph.add(graph.mul(this.net.W2, h1mat), this.net.b2);
+      this.backupGraph(graph); // back this up. Kind of hacky isn't it
+      return a2Mat;
+    }
+
+    private backupGraph(graph: Graph) {
+      this.lastGraph = graph;
+    }
+
+    private shiftStateMemory(s: Mat, actionIndex: number) {
+      this.s0 = this.s1;
+      this.a0 = this.a1;
+      this.s1 = s; // add new state
+      this.a1 = actionIndex;
     }
   
   /**
    * perform an update on Q function
    * @param r1 
    */
-  public learn (r1:number):void {
+  public learn (r1:number): void {
     if(!(this.r0 == null) && this.alpha > 0) {
 
       // learn from this tuple to get a sense of how "surprising" it is to the agent
-      const tderror = this.learnFromTuple(this.s0, this.a0, this.r0, this.s1, this.a1);
-      this.tderror = tderror; // a measure of surprise
+      this.tderror = this.learnFromTuple(this.s0, this.a0, this.r0, this.s1, this.a1); // a measure of surprise
 
       // decide if we should keep this experience in the replay
       if (this.t % this.experienceAddEvery === 0) {
@@ -161,31 +181,40 @@ export class DQNSolver extends Solver {
     this.r0 = r1; // store for next update
   }
 
-    private learnFromTuple (s0:Mat | null, a0:number, r0:number, s1:Mat | null, a1:number | null) {
+    private learnFromTuple (s0:Mat | null, a0:number, r0:number, s1:Mat | null, a1:number | null): number {
       // want: Q(s,a) = r + gamma * max_a' Q(s',a')
 
       // compute the target Q value
-      const tmat = this.forwardQ(this.net, s1, false);
-      const qmax = r0 + this.gamma * tmat.w[R.maxi(tmat.w)];
+      const qmax = this.getTargetQ(s1, r0);
 
       // now predict
-      const pred = this.forwardQ(this.net, s0, true);
+      const pred = this.forwardQ(s0, true);
 
       let tderror = pred.w[a0] - qmax;
-      const clamp = this.tdErrorClamp;
-      if(Math.abs(tderror) > clamp) {  // huber loss to robustify
-        if (tderror > clamp) {
-          tderror = clamp;
+
+      if(Math.abs(tderror) > this.tdErrorClamp) {  // huber loss to robustify
+        if (tderror > this.tdErrorClamp) {
+          tderror = this.tdErrorClamp;
         }
-        if (tderror < -clamp) {
-          tderror = -clamp;
+        if (tderror < -this.tdErrorClamp) {
+          tderror = -this.tdErrorClamp;
         }
       }
-        pred.dw[a0] = tderror;
-      this.lastG.backward(); // compute gradients on net params
+      pred.dw[a0] = tderror;
+      this.lastGraph.backward(); // compute gradients on net params
 
       // update net
       Net.update(this.net, this.alpha);
       return tderror;
     }
+  
+  private getTargetQ(s1: Mat, r0: number) {
+    const tmat = this.forwardQ(s1, false);
+    const qmax = r0 + this.gamma * tmat.w[R.maxi(tmat.w)];
+    return qmax;
+  }
+
+  public getTDError(): number {
+    return this.tderror;
+  }
 }
