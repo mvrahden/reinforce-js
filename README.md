@@ -1,5 +1,5 @@
-# REINFORCE-ts
-**REINFORCE-ts** is an object-oriented Javascript (baked with [Typescript](https://github.com/Microsoft/TypeScript)) port of _Andrej Karpathy's_ Reinforcement Learning library that implements several common RL algorithms.
+# REINFORCE-js
+**REINFORCE-js** is an object-oriented Javascript (baked with [Typescript](https://github.com/Microsoft/TypeScript)) port of _Andrej Karpathy's_ Reinforcement Learning library that implements several common RL algorithms.
 In particular, the library currently includes:
 
 * **Dynamic Programming** methods
@@ -13,26 +13,19 @@ For further Information see the [reinforce-js](https://github.com/karpathy/reinf
 Please be aware that this repository is still _under construction_. Changes are likely to happen.
 There are still classes to be added, e.g. *DPSolver*, *TDSolver*, *SimpleReinforcementSolver*, *RecurrentReinforcementSolver*, *DeterministPG* and their individual *Opts* and *Envs*
 
-# Dependencies
-
-This Library relies on the object-oriented _Deep Recurrent Neural Network_ library:
-
-* **GitHub**: [recurrent-ts](https://github.com/mvrahden/recurrent-ts)
-* **npm**: [recurrent-ts](https://www.npmjs.com/package/recurrent-ts)
-
 # Use as Project Dependency
 
-## To install as a dependency:
+## How to install as a dependency:
 
-Download available `@npm`: [reinforce-ts](https://www.npmjs.com/package/reinforce-ts)
+Download available `@npm`: [reinforce-js](https://www.npmjs.com/package/reinforce-js)
 
 Install via command line:
 
 ```
-npm install --save reinforce-ts
+npm install --save reinforce-js
 ```
 
-## Use the Library in Production:
+## How to use the Library in Production:
 
 Currently exposed Classes (more to be expected soon):
 
@@ -63,14 +56,14 @@ To be implemented:
 
 These classes can be directly imported from this `npm` module, e.g.:
 ```typescript
-import { Solver, Env } from 'reinforce-ts';
+import { Solver, Env } from 'reinforce-js';
 ```
 
 ## Further Info
 
 The transpiled Javascript-target is `ES6`, with a `CommonJS` module format.
 
-# Contribute
+# For Contributors
 
 1. `Clone` this project to a working directory.
 2. `npm install` to setup the development dependencies.
@@ -81,6 +74,13 @@ tsc -p .
 ```
 
 This project relies on Visual Studio Codes built-in Typescript linting facilities. Let's follow primarily the [Google TypeScript Style-Guide](https://github.com/google/ts-style) through the included *tslint-google.json* configuration file.
+
+## Dependencies
+
+This Library relies on the object-oriented _Deep Recurrent Neural Network_ library:
+
+* **GitHub**: [recurrent-js](https://github.com/mvrahden/recurrent-js)
+* **npm**: [recurrent-js](https://www.npmjs.com/package/recurrent-js)
 
 # License
 
