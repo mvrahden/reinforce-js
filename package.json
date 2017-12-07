@@ -1,6 +1,6 @@
 {
   "name": "reinforce-js",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Library of Reinforcement Learning Agents in Javascript (baked with Typescript). Ported, object-oriented and refactored version of Andrej Karpathy's reinforce-js (https://github.com/karpathy/reinforcejs)",
   "keywords": [
     "reinforcement learning",
