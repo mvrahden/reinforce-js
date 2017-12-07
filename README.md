@@ -32,12 +32,12 @@ The project directly ships with the transpiled Javascript code, Map-files and De
 Currently exposed Classes (more to be expected soon):
 
 * `Solver` - Generic Solver Interface
-* `Env` - Generic *Environment* for a Solver (serves as a DQNEnv currently; changes to be expected)
-* `Opt` - Generic *Options* for a Solver (serves as a DQNOpt currently; changes to be expected)
+* `Env` - Generic *Environment* for a Solver
+* `Opt` - Generic *Options* for a Solver
 * `DQNSolver` - Concrete *Deep Q-Learning* Solver
 * `DQNOpt` - Concrete *Options* for DQNSolver creation
 
-To be implemented:
+Planned to be implemented:
 
 - `DPSolver` - Concrete *Temporal Difference* Solver
 - `DPOpt` - Concrete *Options* for DPSolver creation
