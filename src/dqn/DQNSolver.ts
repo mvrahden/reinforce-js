@@ -47,8 +47,8 @@ export class DQNSolver extends Solver {
 
   public reset():void {
     this.numberHiddenUnits = this.opt.get('numHiddenUnits');
-    this.numberOfStates = this.env.getNumStates();
-    this.numberOfMaxActions = this.env.getMaxNumActions();
+    this.numberOfStates = this.env.get('numStates');
+    this.numberOfMaxActions = this.env.get('maxNumActions');
 
     // nets are hardcoded for now as key (str) -> Mat
     // not proud of this. better solution is to have a whole Net object
