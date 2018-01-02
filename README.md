@@ -1,4 +1,6 @@
 # REINFORCE-js
+[![js-google-style](https://img.shields.io/badge/code%20style-google-blue.svg)](https://google.github.io/styleguide/jsguide.html)
+
 **REINFORCE-js** is an object-oriented Javascript (baked with [Typescript](https://github.com/Microsoft/TypeScript)) port of _Andrej Karpathy's_ Reinforcement Learning library that implements several common RL algorithms.
 In particular, the library currently includes:
 
@@ -53,6 +55,12 @@ Planned to be implemented:
 These classes can be directly imported from this `npm` module, e.g.:
 ```typescript
 import { Solver, Env } from 'reinforce-js';
+```
+
+For JavaScript usage `require` classes from this `npm` module as follows:
+```javascript
+const DQNSolver = require('recurrent-js').DQNSolver;
+const DQNOpt = require('recurrent-js').DQNOpt;
 ```
 
 ## Further Info
