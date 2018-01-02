@@ -5,6 +5,22 @@ import { Env } from '../Env';
 import { DQNOpt } from './DQNOpt';
 
 export class DQNSolver extends Solver {
+  // Opts
+  public readonly alpha: number;
+  public readonly epsilon: number;
+  public readonly gamma: number;
+
+  public readonly experienceSize: number;
+  public readonly experienceAddEvery: number;
+  public readonly learningStepsPerIteration: number;
+  public readonly tdErrorClamp: number;
+  public numberOfHiddenUnits: number;
+
+  // Env
+  public numberOfStates: number;
+  public numberOfActions: number;
+
+  // Local
   public net: Net;
   public previousGraph: Graph;
   public a1: number | null = null;
@@ -16,20 +32,6 @@ export class DQNSolver extends Solver {
   public experienceTick: number;
   public experience: Array<any>;
   public tderror: number;
-  public numberHiddenUnits: number;
-  
-  public numberOfStates: number;
-  public numberOfMaxActions: number;
-  
-  public alpha: number;
-  public epsilon: number;
-  public gamma: number;
-  public experienceSize: number;
-  public experienceAddEvery: number;
-  public learningStepsPerIteration: number;
-  public tdErrorClamp: number;
-  public numHiddenUnits: number;
-
 
   constructor(env: Env, opt: DQNOpt) {
     super(env, opt);
@@ -40,28 +42,27 @@ export class DQNSolver extends Solver {
     this.experienceAddEvery = opt.get('experienceAddEvery');
     this.learningStepsPerIteration = opt.get('learningStepsPerIteration');
     this.tdErrorClamp = opt.get('tdErrorClamp');
-    this.numHiddenUnits = opt.get('numHiddenUnits');
+    this.numberOfHiddenUnits = opt.get('numberOfHiddenUnits');
 
     this.reset();
   }
 
-  public reset():void {
-    this.numberHiddenUnits = this.opt.get('numHiddenUnits');
+  public reset(): void {
+    this.numberOfHiddenUnits = this.opt.get('numberOfHiddenUnits');
     this.numberOfStates = this.env.get('numStates');
-    this.numberOfMaxActions = this.env.get('maxNumActions');
+    this.numberOfActions = this.env.get('maxNumActions');
 
     // nets are hardcoded for now as key (str) -> Mat
     // not proud of this. better solution is to have a whole Net object
     // on top of Mats, but for now sticking with this
     this.net = new Net();
-    this.net.W1 = new RandMat(this.numHiddenUnits, this.numberOfStates, 0, 0.01);
-    this.net.b1 = new Mat(this.numHiddenUnits, 1);
-    this.net.W2 = new RandMat(this.numberOfMaxActions, this.numHiddenUnits, 0, 0.01);
-    this.net.b2 = new Mat(this.numberOfMaxActions, 1);
+    this.net.W1 = new RandMat(this.numberOfHiddenUnits, this.numberOfStates, 0, 0.01);
+    this.net.b1 = new Mat(this.numberOfHiddenUnits, 1);
+    this.net.W2 = new RandMat(this.numberOfActions, this.numberOfHiddenUnits, 0, 0.01);
+    this.net.b2 = new Mat(this.numberOfActions, 1);
 
     this.experience = []; // experience
     this.experienceTick = 0; // where to insert
-
     this.learnTick = 0;
 
     this.r0 = null;
@@ -74,26 +75,26 @@ export class DQNSolver extends Solver {
   }
 
   /**
-   * Transforms Agent to JSON
+   * Transforms Agent to (ready-to-stringify) JSON object
    */
-  public toJSON ():object {
+  public toJSON(): object {
     const j = {
-      nh: this.numHiddenUnits,
       ns: this.numberOfStates,
-      na: this.numberOfMaxActions,
+      na: this.numberOfActions,
+      nh: this.numberOfHiddenUnits,
       net: Net.toJSON(this.net)
     };
     return j;
   }
 
   /**
-   * Loads an Agent from a JSON file
+   * Loads an Agent from a (already parsed) JSON object
    * @param json with properties `nh`, `ns`, `na` and `net`
    */
-  public fromJSON (json:{nh, ns, na, net}):void {
-    this.numHiddenUnits = json.nh;
+  public fromJSON(json: { nh, ns, na, net }): void {
+    this.numberOfHiddenUnits = json.nh;
     this.numberOfStates = json.ns;
-    this.numberOfMaxActions = json.na;
+    this.numberOfActions = json.na;
     this.net = Net.fromJSON(json.net);
   }
 
@@ -102,15 +103,15 @@ export class DQNSolver extends Solver {
    * @param stateList 
    * @returns Index of argmax action
    */
-  public act (stateList:Array<number>):number {
+  public act(stateList: Array<number>): number {
     // convert to a Mat column vector
-    const s = new Mat(this.numberOfStates, 1);
-    s.setFrom(stateList);
+    const state = new Mat(this.numberOfStates, 1);
+    state.setFrom(stateList);
 
     // epsilon greedy policy
-    const actionIndex: number = this.greedyActionPolicy(s);
+    const actionIndex: number = this.greedyActionPolicy(state);
 
-    this.shiftStateMemory(s, actionIndex);
+    this.shiftStateMemory(state, actionIndex);
 
     return actionIndex;
   }
@@ -118,7 +119,7 @@ export class DQNSolver extends Solver {
   private greedyActionPolicy(s: Mat): number {
     let actionIndex: number = 0;
     if (Math.random() < this.epsilon) {
-      actionIndex = R.randi(0, this.numberOfMaxActions);
+      actionIndex = R.randi(0, this.numberOfActions);
     }
     else {
       // greedy wrt Q function
@@ -154,24 +155,24 @@ export class DQNSolver extends Solver {
     this.s1 = s; // add new state
     this.a1 = actionIndex;
   }
-  
+
   /**
    * perform an update on Q function
-   * @param r1 
+   * @param r1 reward passed to learn
    */
-  public learn (r1:number): void {
-    if(!(this.r0 == null) && this.alpha > 0) {
+  public learn(r1: number): void {
+    if (!(this.r0 == null) && this.alpha > 0) {
 
       // learn from this tuple to get a sense of how "surprising" it is to the agent
       this.tderror = this.learnFromTuple(this.s0, this.a0, this.r0, this.s1, this.a1); // a measure of surprise
 
-      // keep this experience in the replay
+      // decide: keep this experience in the replay memory?
       this.replayMemoryGate();
 
       // sample some additional experience from replay memory and learn from it
       this.sampledReplayLearning();
     }
-    this.r0 = r1; // store for next update
+    this.r0 = r1; // store reward for next update
   }
 
   private learnFromTuple(s0: Mat | null, a0: number, r0: number, s1: Mat | null, a1: number | null): number {
@@ -194,7 +195,7 @@ export class DQNSolver extends Solver {
     this.previousGraph.backward();
 
     // update net
-    Net.update(this.net, this.alpha);
+    this.net.update(this.alpha);
     return tdError;
   }
 
