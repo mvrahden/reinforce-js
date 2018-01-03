@@ -21,7 +21,7 @@ opt.setExperienceAddEvery(5);
 opt.setExperienceSize(10000);
 opt.setLearningStepsPerIteration(5);
 opt.setTDErrorClamp(1.0);
-opt.setNumHiddenUnits(R.randi(20, 100));
+opt.setNumberOfHiddenUnits(R.randi(20, 100));
 
 // outfit solver with environment complexity and specs
 const dqnSolver = new DQNSolver(env, opt);
