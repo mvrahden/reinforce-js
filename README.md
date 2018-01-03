@@ -59,13 +59,13 @@ Planned to be implemented:
 
 These classes can be imported from this `npm` module, e.g.:
 ```typescript
-import { Solver, Env } from 'reinforce-js';
+import { DQNSolver, DQNOpt } from 'reinforce-js';
 ```
 
 For JavaScript usage `require` classes from this `npm` module as follows:
 ```javascript
-const DQNSolver = require('recurrent-js').DQNSolver;
-const DQNOpt = require('recurrent-js').DQNOpt;
+const DQNSolver = require('reinforce-js').DQNSolver;
+const DQNOpt = require('reinforce-js').DQNOpt;
 ```
 
 ## Further Info for Production Usage
