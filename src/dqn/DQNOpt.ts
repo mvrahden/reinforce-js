@@ -71,7 +71,7 @@ export class DQNOpt extends Opt {
    * Sets the number of neurons in hidden layer
    * @param numberOfHiddenUnits defaults to 100
    */
-  public setNumerOfHiddenUnits(numberOfHiddenUnits: number): void {
+  public setNumberOfHiddenUnits(numberOfHiddenUnits: number): void {
     this.numberOfHiddenUnits = numberOfHiddenUnits;
   }
 }
