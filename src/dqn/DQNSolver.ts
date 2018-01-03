@@ -55,11 +55,12 @@ export class DQNSolver extends Solver {
     // nets are hardcoded for now as key (str) -> Mat
     // not proud of this. better solution is to have a whole Net object
     // on top of Mats, but for now sticking with this
-    this.net = new Net();
-    this.net.W1 = new RandMat(this.numberOfHiddenUnits, this.numberOfStates, 0, 0.01);
-    this.net.b1 = new Mat(this.numberOfHiddenUnits, 1);
-    this.net.W2 = new RandMat(this.numberOfActions, this.numberOfHiddenUnits, 0, 0.01);
-    this.net.b2 = new Mat(this.numberOfActions, 1);
+    const netOpts = {
+      inputSize: this.numberOfStates,
+      hiddenSize: this.numberOfHiddenUnits,
+      outputSize: this.numberOfActions
+    };
+    this.net = new Net(netOpts);
 
     this.experience = []; // experience
     this.experienceTick = 0; // where to insert
