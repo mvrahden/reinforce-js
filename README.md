@@ -40,6 +40,7 @@ Currently exposed Classes (more to be expected soon):
 DQN-Solver: ([Code-Example](src/dqn/dqn-solver.md))
 * **DQNSolver** - Concrete *Deep Q-Learning* Solver
 * **DQNOpt** - Concrete *Options* for DQNSolver creation
+* **DQNEnv** - Concrete *Environment* for DQNSolver creation
 
 TD-Solver: ([Code-Example](src/td/td-solver.md))
 * **TDSolver** - Concrete *Temporal Difference* Solver
@@ -59,13 +60,14 @@ Planned to be implemented:
 
 These classes can be imported from this `npm` module, e.g.:
 ```typescript
-import { DQNSolver, DQNOpt } from 'reinforce-js';
+import { DQNSolver, DQNOpt, DQNEnv } from 'reinforce-js';
 ```
 
 For JavaScript usage `require` classes from this `npm` module as follows:
 ```javascript
 const DQNSolver = require('reinforce-js').DQNSolver;
 const DQNOpt = require('reinforce-js').DQNOpt;
+const DQNEnv = require('reinforce-js').DQNEnv;
 ```
 
 ## Further Info for Production Usage
