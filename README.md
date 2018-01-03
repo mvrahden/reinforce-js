@@ -37,7 +37,7 @@ Currently exposed Classes (more to be expected soon):
 * **Env** - Generic *Environment* for a Solver
 * **Opt** - Generic *Options* for a Solver
 
-DQN-Solver:
+DQN-Solver: ([Code-Example](src/dqn/dqn-solver.md))
 * **DQNSolver** - Concrete *Deep Q-Learning* Solver
 * **DQNOpt** - Concrete *Options* for DQNSolver creation
 
