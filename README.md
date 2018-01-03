@@ -13,7 +13,7 @@ For further Information see the [reinforce-js](https://github.com/karpathy/reinf
 
 ### Work in Progress
 Please be aware that this repository is still _under construction_. Changes are likely to happen.
-There are still classes to be added, e.g. *DPSolver*, *TDSolver*, *SimpleReinforcementSolver*, *RecurrentReinforcementSolver*, *DeterministPG* and their individual *Opts* and *Envs*
+There are still classes to be added, e.g. *DPSolver*, *SimpleReinforcementSolver*, *RecurrentReinforcementSolver*, *DeterministPG* and their individual *Opts* and *Envs*
 
 ## Use as Project Dependency
 
