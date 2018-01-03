@@ -9,7 +9,7 @@ export abstract class Solver {
     this.env = env;
     this.opt = opt;
   }
-  
+
   public getOpt(): any {
     return this.opt;
   }
@@ -18,9 +18,9 @@ export abstract class Solver {
     return this.env;
   }
 
-  public abstract act(stateList:Array<any>):number;
-  public abstract learn(r1:number):void;
-  public abstract reset():void;
-  public abstract toJSON():object;
-  public abstract fromJSON(json:{}):void;
+  public abstract act(stateList: any): number;
+  public abstract learn(r1: number): void;
+  public abstract reset(): void;
+  public abstract toJSON(): object;
+  public abstract fromJSON(json: {}): void;
 }

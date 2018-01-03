@@ -80,8 +80,8 @@ export class DQNSolver extends Solver {
   public toJSON(): object {
     const j = {
       ns: this.numberOfStates,
-      na: this.numberOfActions,
       nh: this.numberOfHiddenUnits,
+      na: this.numberOfActions,
       net: Net.toJSON(this.net)
     };
     return j;
@@ -91,9 +91,9 @@ export class DQNSolver extends Solver {
    * Loads an Agent from a (already parsed) JSON object
    * @param json with properties `nh`, `ns`, `na` and `net`
    */
-  public fromJSON(json: { nh, ns, na, net }): void {
-    this.numberOfHiddenUnits = json.nh;
+  public fromJSON(json: { ns, nh, na, net }): void {
     this.numberOfStates = json.ns;
+    this.numberOfHiddenUnits = json.nh;
     this.numberOfActions = json.na;
     this.net = Net.fromJSON(json.net);
   }
@@ -104,19 +104,17 @@ export class DQNSolver extends Solver {
    * @returns Index of argmax action
    */
   public act(stateList: Array<number>): number {
-    // convert to a Mat column vector
-    const state = new Mat(this.numberOfStates, 1);
-    state.setFrom(stateList);
+    const stateVector = new Mat(this.numberOfStates, 1);
+    stateVector.setFrom(stateList);
 
-    // epsilon greedy policy
-    const actionIndex: number = this.greedyActionPolicy(state);
+    const actionIndex = this.epsilonGreedyActionPolicy(stateVector);
 
-    this.shiftStateMemory(state, actionIndex);
+    this.shiftStateMemory(stateVector, actionIndex);
 
     return actionIndex;
   }
 
-  private greedyActionPolicy(s: Mat): number {
+  private epsilonGreedyActionPolicy(s: Mat): number {
     let actionIndex: number = 0;
     if (Math.random() < this.epsilon) {
       actionIndex = R.randi(0, this.numberOfActions);
@@ -130,7 +128,7 @@ export class DQNSolver extends Solver {
   }
 
   /**
-   * Determine Outputs based on Forward Feed
+   * Determine Outputs based on Forward Pass
    * @param net Network
    * @param s Matrix with states
    * @param needsBackprop 
@@ -145,11 +143,11 @@ export class DQNSolver extends Solver {
     return a2Mat;
   }
 
-  private backupGraph(graph: Graph) {
+  private backupGraph(graph: Graph): void {
     this.previousGraph = graph;
   }
 
-  private shiftStateMemory(s: Mat, actionIndex: number) {
+  private shiftStateMemory(s: Mat, actionIndex: number): void {
     this.s0 = this.s1;
     this.a0 = this.a1;
     this.s1 = s; // add new state
@@ -176,9 +174,7 @@ export class DQNSolver extends Solver {
   }
 
   private learnFromTuple(s0: Mat | null, a0: number, r0: number, s1: Mat | null, a1: number | null): number {
-    // want: Q(s,a) = r + gamma * max_a' Q(s',a')
 
-    // compute the target Q value
     const qMax = this.getTargetQ(s1, r0);
     const predictor = this.forwardQ(s0, true);
     let tdError = predictor.w[a0] - qMax;
@@ -199,13 +195,14 @@ export class DQNSolver extends Solver {
     return tdError;
   }
 
-  private getTargetQ(s1: Mat, r0: number) {
+  private getTargetQ(s1: Mat, r0: number): number {
+    // want: Q(s,a) = r + gamma * max_a' Q(s',a')
     const tMat = this.forwardQ(s1, false);
     const qMax = r0 + this.gamma * tMat.w[R.maxi(tMat.w)];
     return qMax;
   }
 
-  private replayMemoryGate() {
+  private replayMemoryGate(): void {
     if (this.learnTick % this.experienceAddEvery === 0) {
       this.experience[this.experienceTick] = [this.s0, this.a0, this.r0, this.s1, this.a1];
       this.experienceTick++;
@@ -216,7 +213,7 @@ export class DQNSolver extends Solver {
     this.learnTick++;
   }
 
-  private sampledReplayLearning() {
+  private sampledReplayLearning(): void {
     for (let i = 0; i < this.learningStepsPerIteration; i++) {
       const ri = R.randi(0, this.experience.length); // todo: priority sweeps?
       const e = this.experience[ri];
