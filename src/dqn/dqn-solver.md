@@ -3,7 +3,7 @@
 
 ```typescript
 // TypeScript
-import { DQNSolver, DQNOpt, Env } from 'reinforce-js';
+import { DQNSolver, DQNOpt, DQNEnv } from 'reinforce-js';
 
 // JavaScript
 // const DQNSolver = require('reinforce-js').DQNSolver;
@@ -11,7 +11,7 @@ import { DQNSolver, DQNOpt, Env } from 'reinforce-js';
 
 const width = 400;
 const height = 400;
-const env = new Env(width, height);
+const env = new DQNEnv(width, height);
 
 const opt = new DQNOpt();
 opt.setGamma(0.9);
