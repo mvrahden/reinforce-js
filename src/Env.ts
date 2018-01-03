@@ -1,11 +1,15 @@
 export class Env {
 
-  protected numStates: number;
-  protected maxNumActions: number;
+  protected readonly numberOfStates: number;
+  protected readonly numberOfActions: number;
+  protected readonly width: number;
+  protected readonly height: number;
 
-  constructor(numStates: number, maxNumActions: number) {
-    this.numStates = numStates;
-    this.maxNumActions = maxNumActions;
+  constructor(width: number, height: number, numberOfStates: number, maxNumberOfActions: number) {
+    this.width = width;
+    this.height = height;
+    this.numberOfStates = numberOfStates;
+    this.numberOfActions = maxNumberOfActions;
   }
 
   /**
