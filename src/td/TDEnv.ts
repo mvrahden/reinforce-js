@@ -1,9 +1,5 @@
 import { Env } from "../Env";
 
-/**
- * Not yet generalized
- * Gridworld-TD sample
- */
 export class TDEnv extends Env {
 
   public allowedActions(s: number): Array<number> {
@@ -17,8 +13,7 @@ export class TDEnv extends Env {
     return allowedActions;
   }
 
-  // private functions
-  private stox(s: number): number { return Math.floor(s / this.height); }
-  private stoy(s: number): number { return s % this.height; }
-  // private xytos(x, y): number { return x * this.height + y; }
+  protected stox(s: number): number { return Math.floor(s / this.height); }
+  protected stoy(s: number): number { return s % this.height; }
+  
 }

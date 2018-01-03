@@ -5,34 +5,34 @@ import { TDEnv } from './TDEnv';
 import { TDOpt } from './TDOpt';
 
 export class TDSolver extends Solver {
-  private readonly alpha: number;
-  private readonly epsilon: number;
-  private readonly gamma: number;
+  protected readonly alpha: number;
+  protected readonly epsilon: number;
+  protected readonly gamma: number;
 
-  private readonly beta: number;
-  private readonly lambda: number;
-  private readonly numberOfPlanningSteps: number;
-  private readonly update: string;
-  private readonly qInitValue: number;
-  private readonly updateSmoothPolicy: boolean;
-  private readonly replacingTraces: boolean;
+  protected readonly beta: number;
+  protected readonly lambda: number;
+  protected readonly numberOfPlanningSteps: number;
+  protected readonly update: string;
+  protected readonly qInitValue: number;
+  protected readonly updateSmoothPolicy: boolean;
+  protected readonly replacingTraces: boolean;
 
-  private numberOfActions: number;
-  private numberOfStates: number;
+  protected numberOfActions: number;
+  protected numberOfStates: number;
 
-  private pq: Array<number>;
-  private saSeen: Array<number>;
-  private envModelR: Array<number>;
-  private envModelS: Array<number>;
-  private eligibilityTraces: Array<number>;
-  private randomPolicies: Array<number>;
-  private Q: Array<number>;
-  private explored: boolean;
-  private a1: number;
-  private s1: number;
-  private r0: number;
-  private a0: number;
-  private s0: number;
+  protected pq: Array<number>;
+  protected saSeen: Array<number>;
+  protected envModelR: Array<number>;
+  protected envModelS: Array<number>;
+  protected eligibilityTraces: Array<number>;
+  protected randomPolicies: Array<number>;
+  protected Q: Array<number>;
+  protected explored: boolean;
+  protected a1: number;
+  protected s1: number;
+  protected r0: number;
+  protected a0: number;
+  protected s0: number;
 
   protected env: TDEnv;
 
@@ -327,4 +327,5 @@ export class TDSolver extends Solver {
   public fromJSON(json: {}): void {
     throw new Error('Not implemented yet.');
   }
+
 }
