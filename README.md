@@ -93,4 +93,4 @@ This Library relies on the object-oriented _Deep Recurrent Neural Network_ libra
 
 ## License
 
-As of License-File: *MIT*
+As of License-File: [MIT](LICENSE)
