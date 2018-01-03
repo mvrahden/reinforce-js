@@ -11,13 +11,13 @@ In particular, the library currently includes:
 
 For further Information see the [reinforce-js](https://github.com/karpathy/reinforcejs) repository.
 
-## Work in Progress
+### Work in Progress
 Please be aware that this repository is still _under construction_. Changes are likely to happen.
 There are still classes to be added, e.g. *DPSolver*, *TDSolver*, *SimpleReinforcementSolver*, *RecurrentReinforcementSolver*, *DeterministPG* and their individual *Opts* and *Envs*
 
-# Use as Project Dependency
+## Use as Project Dependency
 
-## How to install as a dependency:
+### How to install as a dependency:
 
 Download available `@npm`: [reinforce-js](https://www.npmjs.com/package/reinforce-js)
 
@@ -29,7 +29,7 @@ npm install --save reinforce-js
 
 The project directly ships with the transpiled Javascript code, Map-files and Declaration-files.
 
-## How to use the Library in Production:
+### How to use the Library in Production:
 
 Currently exposed Classes (more to be expected soon):
 
@@ -63,11 +63,11 @@ const DQNSolver = require('recurrent-js').DQNSolver;
 const DQNOpt = require('recurrent-js').DQNOpt;
 ```
 
-## Further Info
+## Further Info for Production Usage
 
 The transpiled Javascript-target is `ES6`, with a `CommonJS` module format.
 
-# For Contributors
+## For Contributors
 
 1. `Clone` this project to a working directory.
 2. `npm install` to setup the development dependencies.
@@ -79,13 +79,13 @@ tsc -p .
 
 This project relies on Visual Studio Codes built-in Typescript linting facilities. Let's follow primarily the [Google TypeScript Style-Guide](https://github.com/google/ts-style) through the included *tslint-google.json* configuration file.
 
-## Dependencies
+### Dependencies
 
 This Library relies on the object-oriented _Deep Recurrent Neural Network_ library:
 
 * **GitHub**: [recurrent-js](https://github.com/mvrahden/recurrent-js)
 * **npm**: [recurrent-js](https://www.npmjs.com/package/recurrent-js)
 
-# License
+## License
 
 As of License-File: *MIT*
