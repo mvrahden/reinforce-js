@@ -41,7 +41,7 @@ DQN-Solver: ([Code-Example](src/dqn/dqn-solver.md))
 * **DQNSolver** - Concrete *Deep Q-Learning* Solver
 * **DQNOpt** - Concrete *Options* for DQNSolver creation
 
-TD-Solver:
+TD-Solver: ([Code-Example](src/td/td-solver.md))
 * **TDSolver** - Concrete *Temporal Difference* Solver
 * **TDOpt** - Concrete *Options* for TDSolver creation
 * **TDEnv** - Concrete *Environment* for TDSolver creation
