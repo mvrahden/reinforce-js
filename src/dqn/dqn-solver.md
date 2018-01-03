@@ -1,7 +1,13 @@
-# DQN-Solver Example
+# DQN-Solver Code Example
+
 
 ```typescript
+// TypeScript
 import { DQNSolver, DQNOpt, Env } from 'reinforce-js';
+
+// JavaScript
+// const DQNSolver = require('reinforce-js').DQNSolver;
+// const DQNOpt = require('reinforce-js').DQNOpt;
 
 const width = 400;
 const height = 400;
@@ -17,6 +23,6 @@ opt.setLearningStepsPerIteration(5);
 opt.setTDErrorClamp(1.0);
 opt.setNumHiddenUnits(R.randi(20, 100));
 
-// outfit brain with environment complexity and specs
-const brain = new DQNSolver(env, opt);
+// outfit solver with environment complexity and specs
+const dqnSolver = new DQNSolver(env, opt);
 ```
