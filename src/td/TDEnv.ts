@@ -1,26 +1,24 @@
-// import { Env } from "../../src/Env";
+import { Env } from "../Env";
 
-// /**
-//  * Not yet generalized
-//  * Gridworld-TD sample
-//  */
-// export class TDEnv extends Env {
-//   private gw: number; // width
-//   private gh: number; // height
-  
-//   public allowedActions(s:number):Array<number> {
-//     const x = this.stox(s);
-//     const y = this.stoy(s);
-//     const as = new Array<number>();
-//     if (x > 0) { as.push(0); }
-//     if (y > 0) { as.push(1); }
-//     if (y < this.gh - 1) { as.push(2); }
-//     if (x < this.gw - 1) { as.push(3); }
-//     return as;
-//   }
+/**
+ * Not yet generalized
+ * Gridworld-TD sample
+ */
+export class TDEnv extends Env {
 
-//   // private functions
-//   private stox(s) { return Math.floor(s / this.gh); }
-//   private stoy(s) { return s % this.gh; }
-//   private xytos(x, y) { return x * this.gh + y; }
-// }
+  public allowedActions(s: number): Array<number> {
+    const x = this.stox(s);
+    const y = this.stoy(s);
+    const allowedActions = new Array<number>();
+    if (x > 0) { allowedActions.push(0); }
+    if (y > 0) { allowedActions.push(1); }
+    if (y < this.height - 1) { allowedActions.push(2); }
+    if (x < this.width - 1) { allowedActions.push(3); }
+    return allowedActions;
+  }
+
+  // private functions
+  private stox(s: number): number { return Math.floor(s / this.height); }
+  private stoy(s: number): number { return s % this.height; }
+  // private xytos(x, y): number { return x * this.height + y; }
+}
