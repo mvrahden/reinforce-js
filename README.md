@@ -36,11 +36,15 @@ Currently exposed Classes (more to be expected soon):
 * **Solver** - Generic Solver Interface
 * **Env** - Generic *Environment* for a Solver
 * **Opt** - Generic *Options* for a Solver
+
+DQN-Solver:
 * **DQNSolver** - Concrete *Deep Q-Learning* Solver
 * **DQNOpt** - Concrete *Options* for DQNSolver creation
-- **TDSolver** - Concrete *Temporal Difference* Solver
-- **TDOpt** - Concrete *Options* for TDSolver creation
-- **TDEnv** - Concrete *Environment* for TDSolver creation
+
+TD-Solver:
+* **TDSolver** - Concrete *Temporal Difference* Solver
+* **TDOpt** - Concrete *Options* for TDSolver creation
+* **TDEnv** - Concrete *Environment* for TDSolver creation
 
 Planned to be implemented:
 
