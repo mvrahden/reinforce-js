@@ -33,25 +33,25 @@ The project directly ships with the transpiled Javascript code, Map-files and De
 
 Currently exposed Classes (more to be expected soon):
 
-* `Solver` - Generic Solver Interface
-* `Env` - Generic *Environment* for a Solver
-* `Opt` - Generic *Options* for a Solver
-* `DQNSolver` - Concrete *Deep Q-Learning* Solver
-* `DQNOpt` - Concrete *Options* for DQNSolver creation
-- `TDSolver` - Concrete *Temporal Difference* Solver
-- `TDOpt` - Concrete *Options* for TDSolver creation
-- `TDEnv` - Concrete *Environment* for TDSolver creation
+* **Solver** - Generic Solver Interface
+* **Env** - Generic *Environment* for a Solver
+* **Opt** - Generic *Options* for a Solver
+* **DQNSolver** - Concrete *Deep Q-Learning* Solver
+* **DQNOpt** - Concrete *Options* for DQNSolver creation
+- **TDSolver** - Concrete *Temporal Difference* Solver
+- **TDOpt** - Concrete *Options* for TDSolver creation
+- **TDEnv** - Concrete *Environment* for TDSolver creation
 
 Planned to be implemented:
 
-- `DPSolver` - Concrete *Temporal Difference* Solver
-- `DPOpt` - Concrete *Options* for DPSolver creation
-- `SimpleReinforcementSolver` - Concrete *Simple Reinforcement* Solver
-- `SimpleReinforcementOpt` - Concrete *Options* for SimpleReinforcementSolver creation
-- `RecurrentReinforcementSolver` - Concrete *Recurrent Reinforcement* Solver
-- `RecurrentReinforcementOpt` - Concrete *Options* for RecurrentReinforcementSolver creation
-- `DeterministPGSolver` - Concrete *Deterministic Policy Gradient* Solver
-- `DeterministPGOpt` - Concrete *Options* for DeterministPGSolver creation
+- **DPSolver** - Concrete *Temporal Difference* Solver
+- **DPOpt** - Concrete *Options* for DPSolver creation
+- **SimpleReinforcementSolver** - Concrete *Simple Reinforcement* Solver
+- **SimpleReinforcementOpt** - Concrete *Options* for SimpleReinforcementSolver creation
+- **RecurrentReinforcementSolver** - Concrete *Recurrent Reinforcement* Solver
+- **RecurrentReinforcementOpt** - Concrete *Options* for RecurrentReinforcementSolver creation
+- **DeterministPGSolver** - Concrete *Deterministic Policy Gradient* Solver
+- **DeterministPGOpt** - Concrete *Options* for DeterministPGSolver creation
 
 These classes can be imported from this `npm` module, e.g.:
 ```typescript
