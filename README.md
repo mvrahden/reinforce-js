@@ -48,14 +48,14 @@ TD-Solver:
 
 Planned to be implemented:
 
-- **DPSolver** - Concrete *Temporal Difference* Solver
-- **DPOpt** - Concrete *Options* for DPSolver creation
-- **SimpleReinforcementSolver** - Concrete *Simple Reinforcement* Solver
-- **SimpleReinforcementOpt** - Concrete *Options* for SimpleReinforcementSolver creation
-- **RecurrentReinforcementSolver** - Concrete *Recurrent Reinforcement* Solver
-- **RecurrentReinforcementOpt** - Concrete *Options* for RecurrentReinforcementSolver creation
-- **DeterministPGSolver** - Concrete *Deterministic Policy Gradient* Solver
-- **DeterministPGOpt** - Concrete *Options* for DeterministPGSolver creation
+* **DPSolver** - Concrete *Temporal Difference* Solver
+* **DPOpt** - Concrete *Options* for DPSolver creation
+* **SimpleReinforcementSolver** - Concrete *Simple Reinforcement* Solver
+* **SimpleReinforcementOpt** - Concrete *Options* for SimpleReinforcementSolver creation
+* **RecurrentReinforcementSolver** - Concrete *Recurrent Reinforcement* Solver
+* **RecurrentReinforcementOpt** - Concrete *Options* for RecurrentReinforcementSolver creation
+* **DeterministPGSolver** - Concrete *Deterministic Policy Gradient* Solver
+* **DeterministPGOpt** - Concrete *Options* for DeterministPGSolver creation
 
 These classes can be imported from this `npm` module, e.g.:
 ```typescript
