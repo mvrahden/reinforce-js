@@ -67,10 +67,11 @@ export class DQNSolver extends Solver {
     this.experienceTick = 0; // where to insert
     this.learnTick = 0;
 
-    this.r0 = null;
+    // sarsa
     this.s0 = null;
-    this.s1 = null;
     this.a0 = null;
+    this.r0 = null;
+    this.s1 = null;
     this.a1 = null;
 
     this.tderror = 0; // for visualization only...
@@ -177,7 +178,7 @@ export class DQNSolver extends Solver {
    * @param r1 current reward passed to learn
    */
   public learn(r1: number): void {
-    if (this.r0 !== null && this.alpha > 0) {
+    if (this.r0 != null && this.alpha > 0) {
       // SARSA: learn from this tuple to get a sense of how "surprising" it is to the agent
       this.tderror = this.learnFromTuple({s0: this.s0, a0: this.a0, r0: this.r0, s1: this.s1, a1: this.a1}); // a measure of surprise
 
@@ -249,8 +250,8 @@ export class DQNSolver extends Solver {
   private limitedSampledReplayLearning(): void {
     for (let i = 0; i < this.learningStepsPerIteration; i++) {
       const ri = R.randi(0, this.memory.length); // todo: priority sweeps?
-      const experience = this.memory[ri];
-      this.learnFromTuple({s0: experience[0], a0: experience[1], r0: experience[2], s1: experience[3], a1: experience[4]});
+      const sarsa = this.memory[ri];
+      this.learnFromTuple(sarsa);
     }
   }
 }
