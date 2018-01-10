@@ -155,11 +155,8 @@ export class DQNSolver extends Solver {
 
   private determineActionVector(graph: Graph, stateVector: Mat) {
     const a2mat = this.net.forward(stateVector, graph);
-    // TODO: Hyperbolic activation of a2Mat
-    const h2mat = graph.sigmoid(a2mat);
-
     this.backupGraph(graph); // back this up. Kind of hacky isn't it
-    return h2mat;
+    return a2mat;
   }
 
   private backupGraph(graph: Graph): void {
@@ -178,7 +175,7 @@ export class DQNSolver extends Solver {
    * @param r1 current reward passed to learn
    */
   public learn(r1: number): void {
-    if (this.r0 != null && this.alpha > 0) {
+    if (this.r0 && this.alpha > 0) {
       // SARSA: learn from this tuple to get a sense of how "surprising" it is to the agent
       this.tderror = this.learnFromTuple({s0: this.s0, a0: this.a0, r0: this.r0, s1: this.s1, a1: this.a1}); // a measure of surprise
 
