@@ -3,6 +3,7 @@ import { Net, Graph, Mat, RandMat, R } from 'recurrent-js';
 import { Solver } from '../Solver';
 import { Env } from '../Env';
 import { DQNOpt } from './DQNOpt';
+import { SARSA } from './sarsa';
 
 export class DQNSolver extends Solver {
   // Opts
@@ -21,17 +22,17 @@ export class DQNSolver extends Solver {
   public numberOfActions: number;
 
   // Local
-  public net: Net;
-  public previousGraph: Graph;
-  public a1: number | null = null;
-  public a0: number | null = null;
-  public s1: Mat | null = null;
-  public s0: Mat | null = null;
-  public r0: number | null = null;
-  public learnTick: number;
-  public experienceTick: number;
-  public experience: Array<any>;
-  public tderror: number;
+  protected net: Net;
+  protected previousGraph: Graph;
+  protected a1: number | null = null;  // current action Index after acting (from t)
+  protected a0: number | null = null;  // last action Index after acting (from t-1)
+  protected s1: Mat | null = null;     // current state while acting (from t)
+  protected s0: Mat | null = null;     // last state after acting (from t-1)
+  protected r0: number | null = null;  // current reward after learning (from t)
+  protected learnTick: number;
+  protected experienceTick: number;
+  protected memory: Array<SARSA>;
+  protected tderror: number;
 
   constructor(env: Env, opt: DQNOpt) {
     super(env, opt);
@@ -62,7 +63,7 @@ export class DQNSolver extends Solver {
     };
     this.net = new Net(netOpts);
 
-    this.experience = []; // experience
+    this.memory = []; // experience
     this.experienceTick = 0; // where to insert
     this.learnTick = 0;
 
@@ -115,97 +116,128 @@ export class DQNSolver extends Solver {
     return actionIndex;
   }
 
-  private epsilonGreedyActionPolicy(s: Mat): number {
+  private epsilonGreedyActionPolicy(stateVector: Mat): number {
     let actionIndex: number = 0;
-    if (Math.random() < this.epsilon) {
+    if (Math.random() < this.epsilon) { // greedy Policy Filter
       actionIndex = R.randi(0, this.numberOfActions);
     }
     else {
-      // greedy wrt Q function
-      const actionMat = this.forwardQ(s, false);
-      actionIndex = R.maxi(actionMat.w); // returns index of argmax action
+      // Q function
+      const actionVector = this.forwardQ(stateVector);
+      actionIndex = R.maxi(actionVector.w); // returns index of argmax action 
     }
     return actionIndex;
   }
 
   /**
    * Determine Outputs based on Forward Pass
-   * @param net Network
-   * @param s Matrix with states
-   * @param needsBackprop 
-   * @return Matrix with predicted actions values
+   * @param stateVector Matrix with states
+   * @return Matrix (Vector) with predicted actions values
    */
-  private forwardQ(s: Mat | null, needsBackprop: boolean): Mat {
-    const graph = new Graph(needsBackprop);
-    const a1mat = graph.add(graph.mul(this.net.W1, s), this.net.b1);
-    const h1mat = graph.tanh(a1mat);
-    const a2Mat = graph.add(graph.mul(this.net.W2, h1mat), this.net.b2);
-    this.backupGraph(graph); // back this up. Kind of hacky isn't it
+  private forwardQ(stateVector: Mat | null): Mat {
+    const graph = new Graph(false);
+    const a2Mat = this.determineActionVector(graph, stateVector);
     return a2Mat;
+  }
+
+  /**
+   * Determine Outputs based on Forward Pass
+   * @param stateVector Matrix with states
+   * @return Matrix (Vector) with predicted actions values
+   */
+  private backwardQ(stateVector: Mat | null): Mat {
+    const graph = new Graph(true);  // with backprop option
+    const a2Mat = this.determineActionVector(graph, stateVector);
+    return a2Mat;
+  }
+
+
+  private determineActionVector(graph: Graph, stateVector: Mat) {
+    const a2mat = this.net.forward(stateVector, graph);
+    // TODO: Hyperbolic activation of a2Mat
+    const h2mat = graph.sigmoid(a2mat);
+
+    this.backupGraph(graph); // back this up. Kind of hacky isn't it
+    return h2mat;
   }
 
   private backupGraph(graph: Graph): void {
     this.previousGraph = graph;
   }
 
-  private shiftStateMemory(s: Mat, actionIndex: number): void {
+  private shiftStateMemory(stateVector: Mat, actionIndex: number): void {
     this.s0 = this.s1;
+    this.s1 = stateVector;
     this.a0 = this.a1;
-    this.s1 = s; // add new state
     this.a1 = actionIndex;
   }
 
   /**
    * perform an update on Q function
-   * @param r1 reward passed to learn
+   * @param r1 current reward passed to learn
    */
   public learn(r1: number): void {
-    if (!(this.r0 == null) && this.alpha > 0) {
+    if (this.r0 !== null && this.alpha > 0) {
+      // SARSA: learn from this tuple to get a sense of how "surprising" it is to the agent
+      this.tderror = this.learnFromTuple({s0: this.s0, a0: this.a0, r0: this.r0, s1: this.s1, a1: this.a1}); // a measure of surprise
 
-      // learn from this tuple to get a sense of how "surprising" it is to the agent
-      this.tderror = this.learnFromTuple(this.s0, this.a0, this.r0, this.s1, this.a1); // a measure of surprise
-
-      // decide: keep this experience in the replay memory?
-      this.replayMemoryGate();
+      this.addToReplayMemory();
 
       // sample some additional experience from replay memory and learn from it
-      this.sampledReplayLearning();
+      this.limitedSampledReplayLearning();
     }
     this.r0 = r1; // store reward for next update
   }
 
-  private learnFromTuple(s0: Mat | null, a0: number, r0: number, s1: Mat | null, a1: number | null): number {
+  /**
+   * SARSA learn from tuple
+   * @param {Mat|null} s0 last stateVector (from last action)
+   * @param {number} a0 last action Index (from last action)
+   * @param {number} r0 last reward (from after last action)
+   * @param {Mat|null} s1 current StateVector (from current action)
+   * @param {number|null} a1 current action Index (from current action)
+   */
+  private learnFromTuple(sarsa: SARSA): number {
+    const q1Max = this.getTargetQ(sarsa.s1, sarsa.r0);
+    const lastActionVector = this.backwardQ(sarsa.s0);
+    let tdError = lastActionVector.w[sarsa.a0] - q1Max;  // Last Action Intensity - ( r0 + gamma * Current Action Intensity)
 
-    const qMax = this.getTargetQ(s1, r0);
-    const predictor = this.forwardQ(s0, true);
-    let tdError = predictor.w[a0] - qMax;
+    tdError = this.huberLoss(tdError);
+    lastActionVector.dw[sarsa.a0] = tdError;
+    this.previousGraph.backward();
 
-    if (Math.abs(tdError) > this.tdErrorClamp) {  // huber loss to robustify
+    // discount all weights of all Matrices by: w[i] = w[i] - (alpha * dw[i]);
+    this.net.update(this.alpha);
+    return tdError;
+  }
+
+  /**
+   * Limit tdError to interval of [-tdErrorClapm, tdErrorClapm], e.g. [-1, 1]
+   * @returns {number} limited tdError
+   */
+  private huberLoss(tdError: number): number {
+    if (Math.abs(tdError) > this.tdErrorClamp) {
       if (tdError > this.tdErrorClamp) {
         tdError = this.tdErrorClamp;
       }
-      if (tdError < -this.tdErrorClamp) {
+      else if (tdError < -this.tdErrorClamp) {
         tdError = -this.tdErrorClamp;
       }
     }
-    predictor.dw[a0] = tdError;
-    this.previousGraph.backward();
-
-    // update net
-    this.net.update(this.alpha);
     return tdError;
   }
 
   private getTargetQ(s1: Mat, r0: number): number {
     // want: Q(s,a) = r + gamma * max_a' Q(s',a')
-    const tMat = this.forwardQ(s1, false);
-    const qMax = r0 + this.gamma * tMat.w[R.maxi(tMat.w)];
+    const targetActionVector = this.forwardQ(s1);
+    const targetActionIndex = R.maxi(targetActionVector.w);
+    const qMax = r0 + this.gamma * targetActionVector.w[targetActionIndex];
     return qMax;
   }
 
-  private replayMemoryGate(): void {
+  private addToReplayMemory(): void {
     if (this.learnTick % this.experienceAddEvery === 0) {
-      this.experience[this.experienceTick] = [this.s0, this.a0, this.r0, this.s1, this.a1];
+      this.memory[this.experienceTick] = {s0: this.s0, a0: this.a0, r0: this.r0, s1: this.s1, a1: this.a1};
       this.experienceTick++;
       if (this.experienceTick > this.experienceSize) {
         this.experienceTick = 0;
@@ -214,11 +246,11 @@ export class DQNSolver extends Solver {
     this.learnTick++;
   }
 
-  private sampledReplayLearning(): void {
+  private limitedSampledReplayLearning(): void {
     for (let i = 0; i < this.learningStepsPerIteration; i++) {
-      const ri = R.randi(0, this.experience.length); // todo: priority sweeps?
-      const e = this.experience[ri];
-      this.learnFromTuple(e[0], e[1], e[2], e[3], e[4]);
+      const ri = R.randi(0, this.memory.length); // todo: priority sweeps?
+      const experience = this.memory[ri];
+      this.learnFromTuple({s0: experience[0], a0: experience[1], r0: experience[2], s1: experience[3], a1: experience[4]});
     }
   }
 }
