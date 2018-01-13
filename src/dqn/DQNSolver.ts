@@ -1,9 +1,9 @@
-import { Net, Graph, Mat, RandMat, R } from 'recurrent-js';
+import { Net, Graph, Mat, RandMat, R } from 'recurrent-js-gpu';
 
 import { Solver } from '../Solver';
 import { Env } from '../Env';
 import { DQNOpt } from './DQNOpt';
-import { SARSA } from './sarsa';
+import { SarsaExperience } from './sarsa';
 
 export class DQNSolver extends Solver {
   // Opts
@@ -31,7 +31,7 @@ export class DQNSolver extends Solver {
   protected r0: number | null = null;  // current reward after learning (from t)
   protected learnTick: number;
   protected experienceTick: number;
-  protected memory: Array<SARSA>;
+  protected memory: Array<SarsaExperience>;
   protected tderror: number;
 
   constructor(env: Env, opt: DQNOpt) {
@@ -195,7 +195,7 @@ export class DQNSolver extends Solver {
    * @param {Mat|null} s1 current StateVector (from current action)
    * @param {number|null} a1 current action Index (from current action)
    */
-  private learnFromTuple(sarsa: SARSA): number {
+  private learnFromTuple(sarsa: SarsaExperience): number {
     const q1Max = this.getTargetQ(sarsa.s1, sarsa.r0);
     const lastActionVector = this.backwardQ(sarsa.s0);
     let tdError = lastActionVector.w[sarsa.a0] - q1Max;  // Last Action Intensity - ( r0 + gamma * Current Action Intensity)
