@@ -49,7 +49,7 @@ TD-Solver: ([Code-Example](src/td/td-solver.md))
 
 Planned to be implemented:
 
-* **DPSolver** - Concrete *Temporal Difference* Solver
+* **DPSolver** - Concrete *Dynamic Programming* Solver
 * **DPOpt** - Concrete *Options* for DPSolver creation
 * **SimpleReinforcementSolver** - Concrete *Simple Reinforcement* Solver
 * **SimpleReinforcementOpt** - Concrete *Options* for SimpleReinforcementSolver creation
