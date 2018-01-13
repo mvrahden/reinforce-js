@@ -35,6 +35,6 @@
   },
   "dependencies": {
     "recurrent-js": "^1.4.6",
-    "recurrent-js-gpu": "^1.4.8"
+    "recurrent-js-gpu": "^1.4.9"
   }
 }
