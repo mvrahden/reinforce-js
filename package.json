@@ -34,7 +34,6 @@
     "typescript": "^2.6.1"
   },
   "dependencies": {
-    "recurrent-js": "^1.4.6",
-    "recurrent-js-gpu": "^1.4.9"
+    "recurrent-js": "^1.4.6"
   }
 }
