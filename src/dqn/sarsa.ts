@@ -1,4 +1,4 @@
-import { Mat } from 'recurrent-js-gpu';
+import { Mat } from 'recurrent-js';
 
 export interface SarsaExperience  {
   s0: Mat;

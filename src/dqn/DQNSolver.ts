@@ -1,4 +1,4 @@
-import { Net, Graph, Mat, RandMat, R } from 'recurrent-js-gpu';
+import { Net, Graph, Mat, RandMat, R } from 'recurrent-js';
 
 import { Solver } from '../Solver';
 import { Env } from '../Env';
