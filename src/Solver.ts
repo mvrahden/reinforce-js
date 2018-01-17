@@ -18,7 +18,12 @@ export abstract class Solver {
     return this.env;
   }
 
-  public abstract act(stateList: any): number;
+  /**
+   * Decide an action according to current state
+   * @param state current state
+   * @returns decided action
+   */
+  public abstract decide(stateList: any): number;
   public abstract learn(r1: number): void;
   public abstract reset(): void;
   public abstract toJSON(): object;

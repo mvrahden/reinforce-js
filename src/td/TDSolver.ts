@@ -98,7 +98,12 @@ export class TDSolver extends Solver {
     this.a1 = null;
   }
 
-  public act(state: number): number {
+  /**
+   * Decide an action according to current state
+   * @param state current state
+   * @returns decided action
+   */
+  public decide(state: number): number {
     // act according to epsilon greedy policy
     // TODO: state comes from Gridworld_td --> Environment??
     const allowedActions = this.env.allowedActions(state);

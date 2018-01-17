@@ -24,14 +24,10 @@ export class DQNSolver extends Solver {
   // Local
   protected net: Net;
   protected previousGraph: Graph;
-  protected a1: number | null = null;  // current action Index after acting (from t)
-  protected a0: number | null = null;  // last action Index after acting (from t-1)
-  protected s1: Mat | null = null;     // current state while acting (from t)
-  protected s0: Mat | null = null;     // last state after acting (from t-1)
-  protected r0: number | null = null;  // current reward after learning (from t)
+  protected shortTermMemory: SarsaExperience = { s0: null, a0: null, r0: null, s1: null, a1: null };   
   protected learnTick: number;
-  protected experienceTick: number;
-  protected memory: Array<SarsaExperience>;
+  protected memoryTick: number;
+  protected longTermMemory: Array<SarsaExperience>;
   protected tderror: number;
 
   constructor(env: Env, opt: DQNOpt) {
@@ -63,18 +59,12 @@ export class DQNSolver extends Solver {
     };
     this.net = new Net(netOpts);
 
-    this.memory = []; // experience
-    this.experienceTick = 0; // where to insert
+    this.longTermMemory = [];
+    this.memoryTick = 0;
     this.learnTick = 0;
 
-    // sarsa
-    this.s0 = null;
-    this.a0 = null;
-    this.r0 = null;
-    this.s1 = null;
-    this.a1 = null;
-
-    this.tderror = 0; // for visualization only...
+    this.shortTermMemory = { s0: null, a0: null, r0: null, s1: null, a1: null };
+    this.tderror = 0;
   }
 
   /**
@@ -102,11 +92,11 @@ export class DQNSolver extends Solver {
   }
 
   /**
-   * Determine action on StateList
-   * @param stateList 
-   * @returns Index of argmax action
+   * Decide an action according to current state
+   * @param state current state
+   * @returns index of argmax action
    */
-  public act(stateList: Array<number>): number {
+  public decide(stateList: Array<number>): number {
     const stateVector = new Mat(this.numberOfStates, 1);
     stateVector.setFrom(stateList);
 
@@ -164,10 +154,10 @@ export class DQNSolver extends Solver {
   }
 
   private shiftStateMemory(stateVector: Mat, actionIndex: number): void {
-    this.s0 = this.s1;
-    this.s1 = stateVector;
-    this.a0 = this.a1;
-    this.a1 = actionIndex;
+    this.shortTermMemory.s0 = this.shortTermMemory.s1;
+    this.shortTermMemory.a0 = this.shortTermMemory.a1;
+    this.shortTermMemory.s1 = stateVector;
+    this.shortTermMemory.a1 = actionIndex;
   }
 
   /**
@@ -175,16 +165,15 @@ export class DQNSolver extends Solver {
    * @param r1 current reward passed to learn
    */
   public learn(r1: number): void {
-    if (this.r0 && this.alpha > 0) {
+    if (this.shortTermMemory.r0 && this.alpha > 0) {
       // SARSA: learn from this tuple to get a sense of how "surprising" it is to the agent
-      this.tderror = this.learnFromTuple({s0: this.s0, a0: this.a0, r0: this.r0, s1: this.s1, a1: this.a1}); // a measure of surprise
+      this.tderror = this.learnFromTuple(this.shortTermMemory); // a measure of surprise
 
       this.addToReplayMemory();
 
-      // sample some additional experience from replay memory and learn from it
       this.limitedSampledReplayLearning();
     }
-    this.r0 = r1; // store reward for next update
+    this.shortTermMemory.r0 = r1; // store reward for next update
   }
 
   /**
@@ -235,19 +224,26 @@ export class DQNSolver extends Solver {
 
   private addToReplayMemory(): void {
     if (this.learnTick % this.experienceAddEvery === 0) {
-      this.memory[this.experienceTick] = {s0: this.s0, a0: this.a0, r0: this.r0, s1: this.s1, a1: this.a1};
-      this.experienceTick++;
-      if (this.experienceTick > this.experienceSize) {
-        this.experienceTick = 0;
-      } // roll over when we run out
+      this.addShortTermToLongTermMemory();
     }
     this.learnTick++;
   }
 
+  private addShortTermToLongTermMemory() {
+    this.longTermMemory[this.memoryTick] = this.shortTermMemory;
+    this.memoryTick++;
+    if (this.memoryTick > this.experienceSize) { // roll over
+      this.memoryTick = 0;
+    }
+  }
+
+  /**
+   * Sample some additional experience (minibatches) from replay memory and learn from it
+   */
   private limitedSampledReplayLearning(): void {
     for (let i = 0; i < this.learningStepsPerIteration; i++) {
-      const ri = R.randi(0, this.memory.length); // todo: priority sweeps?
-      const sarsa = this.memory[ri];
+      const ri = R.randi(0, this.longTermMemory.length); // todo: priority sweeps?
+      const sarsa = this.longTermMemory[ri];
       this.learnFromTuple(sarsa);
     }
   }
