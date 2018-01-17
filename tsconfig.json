@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
+    "lib": [
+      "es6"
+    ],
     "target": "es6",
     "module": "commonjs",
+    "moduleResolution": "node",
     "sourceMap": true,
     "declaration": true,
     "removeComments": true,
@@ -9,7 +13,10 @@
     "outDir": "./dist/",
     "noImplicitAny": false,
     "strictNullChecks": false,
-    "allowUnusedLabels": false
+    "allowUnusedLabels": false,
+    "typeRoots": [
+      "node_modules/@types"
+    ]
   },
   "include": [
     "src/*.ts",
