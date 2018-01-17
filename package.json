@@ -16,7 +16,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "prepare": "npm run test",
+    "prepare": "npm run build",
     "test": "./node_modules/.bin/jasmine",
     "pretest": "npm run build:test",
     "build:test": "tsc -p ./tsconfig.spec.json",
