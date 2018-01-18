@@ -1,15 +1,16 @@
 import { Opt } from '../Opt';
 
 export class DQNOpt extends Opt {
-  protected alpha: number = 0.01;
-  protected epsilon: number = 0.2;
-  protected gamma: number = 0.75;
-
-  protected experienceAddEvery: number = 25;
-  protected experienceSize: number = 5000;
-  protected learningStepsPerIteration: number = 10;
-  protected tdErrorClamp: number = 1.0;
   protected numberOfHiddenUnits: number = 100;
+  protected epsilon: number = 0.2;
+
+  protected alpha: number = 0.01;
+  protected gamma: number = 0.75;
+  protected experienceSize: number = 5000;
+
+  protected learningStepsPerIteration: number = 10;
+  protected experienceAddEvery: number = 25;
+  protected tdErrorClamp: number = 1.0;
 
   /**
    * Sets the Value Function Learning Rate
