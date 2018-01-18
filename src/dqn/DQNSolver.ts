@@ -186,7 +186,7 @@ export class DQNSolver extends Solver {
     const q0Max = lastActionVector.w[sarsa.a0];
     // Expected Loss function L_i = E [(r0 + gamma * Q'(s',a') - Q(s,a)) ^ 2]
     // Loss_i(w_i) = [(r0 + gamma * Q'(s',a') - Q(s,a)) ^ 2]
-    let loss = Math.pow(q1Max - q0Max, 2);
+    let loss = q0Max - q1Max;
 
     loss = this.huberLoss(loss);
     lastActionVector.dw[sarsa.a0] = loss;
@@ -202,13 +202,11 @@ export class DQNSolver extends Solver {
    * @returns {number} limited tdError
    */
   private huberLoss(tdError: number): number {
-    if (Math.abs(tdError) > this.tdErrorClamp) {
-      if (tdError > this.tdErrorClamp) {
-        tdError = this.tdErrorClamp;
-      }
-      else if (tdError < -this.tdErrorClamp) {
-        tdError = -this.tdErrorClamp;
-      }
+    if (tdError > this.tdErrorClamp) {
+      tdError = this.tdErrorClamp;
+    }
+    else if (tdError < -this.tdErrorClamp) {
+      tdError = -this.tdErrorClamp;
     }
     return tdError;
   }
