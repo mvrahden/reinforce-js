@@ -10,7 +10,7 @@ export class DQNOpt extends Opt {
 
   protected learningStepsPerIteration: number = 10;
   protected experienceAddEvery: number = 25;
-  protected tdErrorClamp: number = 1.0;
+  protected delta: number = 1.0;
 
   /**
    * Sets the Value Function Learning Rate
@@ -61,11 +61,11 @@ export class DQNOpt extends Opt {
   }
 
   /**
-   * Sets the TD-Error Clamp for Robustness
-   * @param tdErrorClamp defaults to 1.0
+   * Sets the delta (loss clamp) of the huber loss function for robustness
+   * @param delta defaults to 1.0
    */
-  public setTDErrorClamp(tdErrorClamp: number): void {
-    this.tdErrorClamp = tdErrorClamp;
+  public setDelta(delta: number): void {
+    this.delta = delta;
   }
 
   /**

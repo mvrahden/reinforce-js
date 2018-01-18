@@ -14,7 +14,7 @@ export class DQNSolver extends Solver {
   public readonly experienceSize: number;
   public readonly experienceAddEvery: number;
   public readonly learningStepsPerIteration: number;
-  public readonly tdErrorClamp: number;
+  public readonly delta: number;
   public numberOfHiddenUnits: number;
 
   // Env
@@ -38,7 +38,7 @@ export class DQNSolver extends Solver {
     this.experienceSize = opt.get('experienceSize');
     this.experienceAddEvery = opt.get('experienceAddEvery');
     this.learningStepsPerIteration = opt.get('learningStepsPerIteration');
-    this.tdErrorClamp = opt.get('tdErrorClamp');
+    this.delta = opt.get('delta');
     this.numberOfHiddenUnits = opt.get('numberOfHiddenUnits');
 
     this.reset();
@@ -198,17 +198,17 @@ export class DQNSolver extends Solver {
   }
 
   /**
-   * Limit tdError to interval of [-tdErrorClapm, tdErrorClapm], e.g. [-1, 1]
+   * Limit loss to interval of [-delta, delta], e.g. [-1, 1]
    * @returns {number} limited tdError
    */
-  private huberLoss(tdError: number): number {
-    if (tdError > this.tdErrorClamp) {
-      tdError = this.tdErrorClamp;
+  private huberLoss(loss: number): number {
+    if (loss > this.delta) {
+      loss = this.delta;
     }
-    else if (tdError < -this.tdErrorClamp) {
-      tdError = -this.tdErrorClamp;
+    else if (loss < -this.delta) {
+      loss = -this.delta;
     }
-    return tdError;
+    return loss;
   }
 
 
