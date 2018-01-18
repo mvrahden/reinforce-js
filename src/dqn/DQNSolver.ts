@@ -24,7 +24,7 @@ export class DQNSolver extends Solver {
   // Local
   protected net: Net;
   protected previousGraph: Graph;
-  protected shortTermMemory: SarsaExperience = { s0: null, a0: null, r0: null, s1: null, a1: null };   
+  protected shortTermMemory: SarsaExperience = { s0: null, a0: null, r0: null, s1: null, a1: null };
   protected learnTick: number;
   protected memoryTick: number;
   protected longTermMemory: Array<SarsaExperience>;
@@ -96,9 +96,9 @@ export class DQNSolver extends Solver {
    * @param state current state
    * @returns index of argmax action
    */
-  public decide(stateList: Array<number>): number {
+  public decide(state: Array<number>): number {
     const stateVector = new Mat(this.numberOfStates, 1);
-    stateVector.setFrom(stateList);
+    stateVector.setFrom(state);
 
     const actionIndex = this.epsilonGreedyActionPolicy(stateVector);
 
@@ -167,7 +167,7 @@ export class DQNSolver extends Solver {
   public learn(r1: number): void {
     if (this.shortTermMemory.r0 && this.alpha > 0) {
       // SARSA: learn from this tuple to get a sense of how "surprising" it is to the agent
-      this.tderror = this.learnFromTuple(this.shortTermMemory); // a measure of surprise
+      this.tderror = this.learnFromSarsaTuple(this.shortTermMemory); // a measure of surprise
 
       this.addToReplayMemory();
 
@@ -177,25 +177,24 @@ export class DQNSolver extends Solver {
   }
 
   /**
-   * SARSA learn from tuple
-   * @param {Mat|null} s0 last stateVector (from last action)
-   * @param {number} a0 last action Index (from last action)
-   * @param {number} r0 last reward (from after last action)
-   * @param {Mat|null} s1 current StateVector (from current action)
-   * @param {number|null} a1 current action Index (from current action)
+   * Learn from sarsa tuple
+   * @param {SarsaExperience} sarsa Object containing states, actions and reward of t & t-1
    */
-  private learnFromTuple(sarsa: SarsaExperience): number {
+  private learnFromSarsaTuple(sarsa: SarsaExperience): number {
     const q1Max = this.getTargetQ(sarsa.s1, sarsa.r0);
     const lastActionVector = this.backwardQ(sarsa.s0);
-    let tdError = lastActionVector.w[sarsa.a0] - q1Max;  // Last Action Intensity - ( r0 + gamma * Current Action Intensity)
+    const q0Max = lastActionVector.w[sarsa.a0];
+    // Expected Loss function L_i = E [(r0 + gamma * Q'(s',a') - Q(s,a)) ^ 2]
+    // Loss_i(w_i) = [(r0 + gamma * Q'(s',a') - Q(s,a)) ^ 2]
+    let loss = Math.pow(q1Max - q0Max, 2);
 
-    tdError = this.huberLoss(tdError);
-    lastActionVector.dw[sarsa.a0] = tdError;
+    loss = this.huberLoss(loss);
+    lastActionVector.dw[sarsa.a0] = loss;
     this.previousGraph.backward();
 
-    // discount all weights of all Matrices by: w[i] = w[i] - (alpha * dw[i]);
+    // discount all weights of net by: w[i] = w[i] - (alpha * dw[i]);
     this.net.update(this.alpha);
-    return tdError;
+    return loss;
   }
 
   /**
@@ -213,6 +212,7 @@ export class DQNSolver extends Solver {
     }
     return tdError;
   }
+
 
   private getTargetQ(s1: Mat, r0: number): number {
     // want: Q(s,a) = r + gamma * max_a' Q(s',a')
@@ -244,7 +244,7 @@ export class DQNSolver extends Solver {
     for (let i = 0; i < this.learningStepsPerIteration; i++) {
       const ri = R.randi(0, this.longTermMemory.length); // todo: priority sweeps?
       const sarsa = this.longTermMemory[ri];
-      this.learnFromTuple(sarsa);
+      this.learnFromSarsaTuple(sarsa);
     }
   }
 }
