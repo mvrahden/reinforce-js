@@ -230,7 +230,7 @@ export class DQNSolver extends Solver {
   private addShortTermToLongTermMemory() {
     this.longTermMemory[this.memoryTick] = this.shortTermMemory;
     this.memoryTick++;
-    if (this.memoryTick > this.experienceSize) { // roll over
+    if (this.memoryTick > this.experienceSize - 1) { // roll over
       this.memoryTick = 0;
     }
   }
