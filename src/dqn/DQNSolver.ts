@@ -107,7 +107,7 @@ export class DQNSolver extends Solver {
     return actionIndex;
   }
 
-  private epsilonGreedyActionPolicy(stateVector: Mat): number {
+  protected epsilonGreedyActionPolicy(stateVector: Mat): number {
     let actionIndex: number = 0;
     if (Math.random() < this.epsilon) { // greedy Policy Filter
       actionIndex = R.randi(0, this.numberOfActions);
@@ -125,7 +125,7 @@ export class DQNSolver extends Solver {
    * @param stateVector Matrix with states
    * @return Matrix (Vector) with predicted actions values
    */
-  private forwardQ(stateVector: Mat | null): Mat {
+  protected forwardQ(stateVector: Mat | null): Mat {
     const graph = new Graph(false);
     const a2Mat = this.determineActionVector(graph, stateVector);
     return a2Mat;
@@ -136,24 +136,24 @@ export class DQNSolver extends Solver {
    * @param stateVector Matrix with states
    * @return Matrix (Vector) with predicted actions values
    */
-  private backwardQ(stateVector: Mat | null): Mat {
+  protected backwardQ(stateVector: Mat | null): Mat {
     const graph = new Graph(true);  // with backprop option
     const a2Mat = this.determineActionVector(graph, stateVector);
     return a2Mat;
   }
 
 
-  private determineActionVector(graph: Graph, stateVector: Mat) {
+  protected determineActionVector(graph: Graph, stateVector: Mat) {
     const a2mat = this.net.forward(stateVector, graph);
     this.backupGraph(graph); // back this up. Kind of hacky isn't it
     return a2mat;
   }
 
-  private backupGraph(graph: Graph): void {
+  protected backupGraph(graph: Graph): void {
     this.previousGraph = graph;
   }
 
-  private shiftStateMemory(stateVector: Mat, actionIndex: number): void {
+  protected shiftStateMemory(stateVector: Mat, actionIndex: number): void {
     this.shortTermMemory.s0 = this.shortTermMemory.s1;
     this.shortTermMemory.a0 = this.shortTermMemory.a1;
     this.shortTermMemory.s1 = stateVector;
@@ -180,7 +180,7 @@ export class DQNSolver extends Solver {
    * Learn from sarsa tuple
    * @param {SarsaExperience} sarsa Object containing states, actions and reward of t & t-1
    */
-  private learnFromSarsaTuple(sarsa: SarsaExperience): number {
+  protected learnFromSarsaTuple(sarsa: SarsaExperience): number {
     const q1Max = this.getTargetQ(sarsa.s1, sarsa.r0);
     const lastActionVector = this.backwardQ(sarsa.s0);
     const q0Max = lastActionVector.w[sarsa.a0];
@@ -201,7 +201,7 @@ export class DQNSolver extends Solver {
    * Limit loss to interval of [-delta, delta], e.g. [-1, 1]
    * @returns {number} limited tdError
    */
-  private huberLoss(loss: number): number {
+  protected huberLoss(loss: number): number {
     if (loss > this.delta) {
       loss = this.delta;
     }
@@ -212,7 +212,7 @@ export class DQNSolver extends Solver {
   }
 
 
-  private getTargetQ(s1: Mat, r0: number): number {
+  protected getTargetQ(s1: Mat, r0: number): number {
     // want: Q(s,a) = r + gamma * max_a' Q(s',a')
     const targetActionVector = this.forwardQ(s1);
     const targetActionIndex = R.maxi(targetActionVector.w);
@@ -220,15 +220,25 @@ export class DQNSolver extends Solver {
     return qMax;
   }
 
-  private addToReplayMemory(): void {
+  protected addToReplayMemory(): void {
     if (this.learnTick % this.experienceAddEvery === 0) {
       this.addShortTermToLongTermMemory();
     }
     this.learnTick++;
   }
 
-  private addShortTermToLongTermMemory() {
-    this.longTermMemory[this.memoryTick] = this.shortTermMemory;
+  protected addShortTermToLongTermMemory() {
+    const s0 = new Mat(this.shortTermMemory.s0.rows, this.shortTermMemory.s0.cols);
+    s0.setFrom(this.shortTermMemory.s0.w);
+    const s1 = new Mat(this.shortTermMemory.s1.rows, this.shortTermMemory.s1.cols);
+    s1.setFrom(this.shortTermMemory.s1.w);
+    this.longTermMemory[this.memoryTick] = {
+      s0,
+      a0: this.shortTermMemory.a0,
+      r0: this.shortTermMemory.r0,
+      s1,
+      a1: this.shortTermMemory.a1
+    };
     this.memoryTick++;
     if (this.memoryTick > this.experienceSize - 1) { // roll over
       this.memoryTick = 0;
@@ -238,7 +248,7 @@ export class DQNSolver extends Solver {
   /**
    * Sample some additional experience (minibatches) from replay memory and learn from it
    */
-  private limitedSampledReplayLearning(): void {
+  protected limitedSampledReplayLearning(): void {
     for (let i = 0; i < this.learningStepsPerIteration; i++) {
       const ri = R.randi(0, this.longTermMemory.length); // todo: priority sweeps?
       const sarsa = this.longTermMemory[ri];
