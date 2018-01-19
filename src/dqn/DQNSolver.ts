@@ -7,7 +7,9 @@ import { SarsaExperience } from './sarsa';
 
 export class DQNSolver extends Solver {
   // Opts
-  public readonly epsilon: number;
+  public readonly epsilonMax: number;
+  public readonly epsilonMin: number;
+  public readonly epsilonPeriod: number;
   public readonly gamma: number;
   
   public readonly alpha: number;
@@ -25,21 +27,25 @@ export class DQNSolver extends Solver {
   // Local
   protected net: Net;
   protected previousGraph: Graph;
-  protected shortTermMemory: SarsaExperience = { s0: null, a0: null, r0: null, s1: null, a1: null };
+  protected shortTermMemory: SarsaExperience;
   protected longTermMemory: Array<SarsaExperience>;
   protected learnTick: number;
   protected memoryTick: number;
 
   constructor(env: Env, opt: DQNOpt) {
     super(env, opt);
-    this.alpha = opt.get('alpha');
-    this.epsilon = opt.get('epsilon');
+    this.epsilonMax = opt.get('epsilonMax');
+    this.epsilonMin = opt.get('epsilonMin');
+    this.epsilonPeriod = opt.get('epsilonPeriod');
     this.gamma = opt.get('gamma');
+
+    this.alpha = opt.get('alpha');
     this.experienceSize = opt.get('experienceSize');
+    this.numberOfHiddenUnits = opt.get('numberOfHiddenUnits');
+
     this.experienceAddEvery = opt.get('experienceAddEvery');
     this.learningStepsPerIteration = opt.get('learningStepsPerIteration');
     this.delta = opt.get('delta');
-    this.numberOfHiddenUnits = opt.get('numberOfHiddenUnits');
 
     this.reset();
   }
@@ -105,7 +111,7 @@ export class DQNSolver extends Solver {
 
   protected epsilonGreedyActionPolicy(stateVector: Mat): number {
     let actionIndex: number = 0;
-    if (Math.random() < this.epsilon) { // greedy Policy Filter
+    if (Math.random() < this.currentEpsilon()) { // greedy Policy Filter
       actionIndex = R.randi(0, this.numberOfActions);
     }
     else {
@@ -114,6 +120,18 @@ export class DQNSolver extends Solver {
       actionIndex = R.maxi(actionVector.w); // returns index of argmax action 
     }
     return actionIndex;
+  }
+
+  /**
+   * Determines the current epsilon.
+   */
+  protected currentEpsilon(): number {
+    if(this.learnTick < this.epsilonPeriod) {
+      return this.epsilonMax - (this.epsilonMax - this.epsilonMin) / this.epsilonPeriod * this.learnTick;
+    }
+    else {
+      return this.epsilonMin;
+    }
   }
 
   /**

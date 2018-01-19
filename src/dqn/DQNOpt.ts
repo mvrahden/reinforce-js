@@ -2,7 +2,9 @@ import { Opt } from '../Opt';
 
 export class DQNOpt extends Opt {
   protected numberOfHiddenUnits: number = 100;
-  protected epsilon: number = 0.2;
+  protected epsilonMax: number = 1.0;
+  protected epsilonMin: number = 0.1;
+  protected epsilonPeriod: number = 1e6;
 
   protected alpha: number = 0.01;
   protected gamma: number = 0.75;
@@ -21,11 +23,15 @@ export class DQNOpt extends Opt {
   }
 
   /**
-   * Sets the Epsilon Factor (Exploration Factor or Greedy Policy)
-   * @param epsilon value from [0,1); defaults to 0.2
+   * Defines a linear annealing of Epsilon for an Epsilon Greedy Policy
+   * @param epsilonMax upper bound of epsilon; defaults to 1.0
+   * @param epsilonMin lower bound of epsilon; defaults to 0.2
+   * @param epsilonPeriod number of timesteps; defaults to 0.2
    */
-  public setEpsilon(epsilon: number): void {
-    this.epsilon = epsilon;
+  public setEpsilon(epsilonMax: number, epsilonMin: number, epsilonPeriod: number): void {
+    this.epsilonMax = epsilonMax;
+    this.epsilonMin = epsilonMin;
+    this.epsilonPeriod = epsilonPeriod;
   }
 
   /**
