@@ -190,8 +190,13 @@ export class DQNSolver extends Solver {
     }
     this.shortTermMemory.r0 = r; // store reward for next update
   }
+
+  /**
+   * Clips Reward, If rewardClipping is activated
+   * @param r current reward
+   */
   protected clipReward(r: number): number {
-    return this.doRewardClipping ? Math.sign(r) * Math.min(Math.abs(r)) : r;
+    return this.doRewardClipping ? Math.sign(r) * Math.min(Math.abs(r), 1) : r;
   }
 
   /**

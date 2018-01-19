@@ -1,13 +1,13 @@
 import { Opt } from '../Opt';
 
 export class DQNOpt extends Opt {
-  doRewardClipping: boolean;
   protected numberOfHiddenUnits: number = 100;
   protected epsilonMax: number = 1.0;
   protected epsilonMin: number = 0.1;
   protected epsilonPeriod: number = 1e6;
-
+  
   protected alpha: number = 0.01;
+  protected doRewardClipping: boolean = true;
   protected gamma: number = 0.75;
   protected experienceSize: number = 5000;
 
@@ -84,8 +84,8 @@ export class DQNOpt extends Opt {
   }
 
   /**
-   * Sets the number of neurons in hidden layer
-   * @param numberOfHiddenUnits defaults to 100
+   * Activates or deactivates the Reward clipping to -1 or +1.
+   * @param doRewardClipping defaults to true
    */
   public setRewardClipping(doRewardClipping: boolean): void {
     this.doRewardClipping = doRewardClipping;
