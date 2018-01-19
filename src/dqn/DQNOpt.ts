@@ -1,6 +1,7 @@
 import { Opt } from '../Opt';
 
 export class DQNOpt extends Opt {
+  doRewardClipping: boolean;
   protected numberOfHiddenUnits: number = 100;
   protected epsilonMax: number = 1.0;
   protected epsilonMin: number = 0.1;
@@ -80,5 +81,13 @@ export class DQNOpt extends Opt {
    */
   public setNumberOfHiddenUnits(numberOfHiddenUnits: number): void {
     this.numberOfHiddenUnits = numberOfHiddenUnits;
+  }
+
+  /**
+   * Sets the number of neurons in hidden layer
+   * @param numberOfHiddenUnits defaults to 100
+   */
+  public setRewardClipping(doRewardClipping: boolean): void {
+    this.doRewardClipping = doRewardClipping;
   }
 }

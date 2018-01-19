@@ -13,6 +13,7 @@ export class DQNSolver extends Solver {
   public readonly gamma: number;
   
   public readonly alpha: number;
+  public readonly doRewardClipping: any;
   public readonly experienceSize: number;
   public numberOfHiddenUnits: number;
 
@@ -40,6 +41,7 @@ export class DQNSolver extends Solver {
     this.gamma = opt.get('gamma');
 
     this.alpha = opt.get('alpha');
+    this.doRewardClipping = opt.get('doRewardClipping');
     this.experienceSize = opt.get('experienceSize');
     this.numberOfHiddenUnits = opt.get('numberOfHiddenUnits');
 
@@ -180,11 +182,16 @@ export class DQNSolver extends Solver {
    */
   public learn(r: number): void {
     if (this.shortTermMemory.r0 && this.alpha > 0) {
+      this.learnTick++;
+      r = this.clipReward(r);
       this.learnFromSarsaTuple(this.shortTermMemory); // a measure of surprise
       this.addToReplayMemory();
       this.limitedSampledReplayLearning();
     }
     this.shortTermMemory.r0 = r; // store reward for next update
+  }
+  protected clipReward(r: number): number {
+    return this.doRewardClipping ? Math.sign(r) * Math.min(Math.abs(r)) : r;
   }
 
   /**
@@ -234,7 +241,6 @@ export class DQNSolver extends Solver {
     if (this.learnTick % this.experienceAddEvery === 0) {
       this.addShortTermToLongTermMemory();
     }
-    this.learnTick++;
   }
 
   protected addShortTermToLongTermMemory() {
