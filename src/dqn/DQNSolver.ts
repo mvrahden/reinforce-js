@@ -30,7 +30,7 @@ export class DQNSolver extends Solver {
   // Local
   protected net: Net;
   protected previousGraph: Graph;
-  protected shortTermMemory: SarsaExperience;
+  protected shortTermMemory: SarsaExperience = { s0: null, a0: null, r0: null, s1: null, a1: null };
   protected longTermMemory: Array<SarsaExperience>;
   protected learnTick: number;
   protected memoryTick: number;
@@ -68,11 +68,16 @@ export class DQNSolver extends Solver {
     };
     this.net = new Net(netOpts);
 
-    this.longTermMemory = [];
     this.memoryTick = 0;
     this.learnTick = 0;
+    
+    this.shortTermMemory.s0 = null;
+    this.shortTermMemory.a0 = null;
+    this.shortTermMemory.r0 = null;
+    this.shortTermMemory.s1 = null;
+    this.shortTermMemory.a1 = null;
 
-    this.shortTermMemory = { s0: null, a0: null, r0: null, s1: null, a1: null };
+    this.longTermMemory = [];
   }
 
   /**
@@ -255,21 +260,27 @@ export class DQNSolver extends Solver {
   }
 
   protected addShortTermToLongTermMemory() {
+    const sarsa = this.extractSarsaExperience();
+    this.longTermMemory[this.memoryTick] = sarsa;
+    this.memoryTick++;
+    if (this.memoryTick > this.experienceSize - 1) { // roll over
+      this.memoryTick = 0;
+    }
+  }
+
+  protected extractSarsaExperience(): SarsaExperience {
     const s0 = new Mat(this.shortTermMemory.s0.rows, this.shortTermMemory.s0.cols);
     s0.setFrom(this.shortTermMemory.s0.w);
     const s1 = new Mat(this.shortTermMemory.s1.rows, this.shortTermMemory.s1.cols);
     s1.setFrom(this.shortTermMemory.s1.w);
-    this.longTermMemory[this.memoryTick] = {
+    const sarsa = {
       s0,
       a0: this.shortTermMemory.a0,
       r0: this.shortTermMemory.r0,
       s1,
       a1: this.shortTermMemory.a1
     };
-    this.memoryTick++;
-    if (this.memoryTick > this.experienceSize - 1) { // roll over
-      this.memoryTick = 0;
-    }
+    return sarsa;
   }
 
   /**
