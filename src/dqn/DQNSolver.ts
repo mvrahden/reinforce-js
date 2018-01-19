@@ -193,7 +193,6 @@ export class DQNSolver extends Solver {
    */
   public learn(r: number): void {
     if (this.shortTermMemory.r0 && this.alpha > 0) {
-      this.learnTick++;
       r = this.clipReward(r);
       this.learnFromSarsaTuple(this.shortTermMemory); // a measure of surprise
       this.addToReplayMemory();
@@ -257,6 +256,7 @@ export class DQNSolver extends Solver {
     if (this.learnTick % this.experienceAddEvery === 0) {
       this.addShortTermToLongTermMemory();
     }
+    this.learnTick++;
   }
 
   protected addShortTermToLongTermMemory() {
