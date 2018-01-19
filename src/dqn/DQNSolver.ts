@@ -7,15 +7,16 @@ import { SarsaExperience } from './sarsa';
 
 export class DQNSolver extends Solver {
   // Opts
-  public readonly alpha: number;
   public readonly epsilon: number;
   public readonly gamma: number;
-
+  
+  public readonly alpha: number;
   public readonly experienceSize: number;
+  public numberOfHiddenUnits: number;
+
+  public readonly delta: number;
   public readonly experienceAddEvery: number;
   public readonly learningStepsPerIteration: number;
-  public readonly delta: number;
-  public numberOfHiddenUnits: number;
 
   // Env
   public numberOfStates: number;
@@ -25,10 +26,9 @@ export class DQNSolver extends Solver {
   protected net: Net;
   protected previousGraph: Graph;
   protected shortTermMemory: SarsaExperience = { s0: null, a0: null, r0: null, s1: null, a1: null };
+  protected longTermMemory: Array<SarsaExperience>;
   protected learnTick: number;
   protected memoryTick: number;
-  protected longTermMemory: Array<SarsaExperience>;
-  protected tderror: number;
 
   constructor(env: Env, opt: DQNOpt) {
     super(env, opt);
@@ -49,9 +49,6 @@ export class DQNSolver extends Solver {
     this.numberOfStates = this.env.get('numberOfStates');
     this.numberOfActions = this.env.get('numberOfActions');
 
-    // nets are hardcoded for now as key (str) -> Mat
-    // not proud of this. better solution is to have a whole Net object
-    // on top of Mats, but for now sticking with this
     const netOpts = {
       inputSize: this.numberOfStates,
       hiddenSize: this.numberOfHiddenUnits,
@@ -64,7 +61,6 @@ export class DQNSolver extends Solver {
     this.learnTick = 0;
 
     this.shortTermMemory = { s0: null, a0: null, r0: null, s1: null, a1: null };
-    this.tderror = 0;
   }
 
   /**
@@ -162,25 +158,22 @@ export class DQNSolver extends Solver {
 
   /**
    * perform an update on Q function
-   * @param r1 current reward passed to learn
+   * @param r current reward passed to learn
    */
-  public learn(r1: number): void {
+  public learn(r: number): void {
     if (this.shortTermMemory.r0 && this.alpha > 0) {
-      // SARSA: learn from this tuple to get a sense of how "surprising" it is to the agent
-      this.tderror = this.learnFromSarsaTuple(this.shortTermMemory); // a measure of surprise
-
+      this.learnFromSarsaTuple(this.shortTermMemory); // a measure of surprise
       this.addToReplayMemory();
-
       this.limitedSampledReplayLearning();
     }
-    this.shortTermMemory.r0 = r1; // store reward for next update
+    this.shortTermMemory.r0 = r; // store reward for next update
   }
 
   /**
    * Learn from sarsa tuple
    * @param {SarsaExperience} sarsa Object containing states, actions and reward of t & t-1
    */
-  protected learnFromSarsaTuple(sarsa: SarsaExperience): number {
+  protected learnFromSarsaTuple(sarsa: SarsaExperience): void {
     const q1Max = this.getTargetQ(sarsa.s1, sarsa.r0);
     const lastActionVector = this.backwardQ(sarsa.s0);
     const q0Max = lastActionVector.w[sarsa.a0];
@@ -194,7 +187,6 @@ export class DQNSolver extends Solver {
 
     // discount all weights of net by: w[i] = w[i] - (alpha * dw[i]);
     this.net.update(this.alpha);
-    return loss;
   }
 
   /**
