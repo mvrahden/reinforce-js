@@ -7,11 +7,13 @@ import { SarsaExperience } from './sarsa';
 
 export class DQNSolver extends Solver {
   // Opts
+  public readonly isTraining: boolean;
+  public readonly epsilon: number;
   public readonly epsilonMax: number;
   public readonly epsilonMin: number;
   public readonly epsilonPeriod: number;
   public readonly gamma: number;
-  
+
   public readonly alpha: number;
   public readonly doRewardClipping: any;
   public readonly experienceSize: number;
@@ -35,6 +37,8 @@ export class DQNSolver extends Solver {
 
   constructor(env: Env, opt: DQNOpt) {
     super(env, opt);
+    this.isTraining = opt.get('isTraining');
+    this.epsilon = opt.get('epsilon');
     this.epsilonMax = opt.get('epsilonMax');
     this.epsilonMin = opt.get('epsilonMin');
     this.epsilonPeriod = opt.get('epsilonPeriod');
@@ -115,8 +119,7 @@ export class DQNSolver extends Solver {
     let actionIndex: number = 0;
     if (Math.random() < this.currentEpsilon()) { // greedy Policy Filter
       actionIndex = R.randi(0, this.numberOfActions);
-    }
-    else {
+    } else {
       // Q function
       const actionVector = this.forwardQ(stateVector);
       actionIndex = R.maxi(actionVector.w); // returns index of argmax action 
@@ -128,11 +131,14 @@ export class DQNSolver extends Solver {
    * Determines the current epsilon.
    */
   protected currentEpsilon(): number {
-    if(this.learnTick < this.epsilonPeriod) {
-      return this.epsilonMax - (this.epsilonMax - this.epsilonMin) / this.epsilonPeriod * this.learnTick;
-    }
-    else {
-      return this.epsilonMin;
+    if (this.isTraining) {
+      if (this.learnTick < this.epsilonPeriod) {
+        return this.epsilonMax - (this.epsilonMax - this.epsilonMin) / this.epsilonPeriod * this.learnTick;
+      } else {
+        return this.epsilonMin;
+      }
+    } else {
+      return this.epsilon;
     }
   }
 
