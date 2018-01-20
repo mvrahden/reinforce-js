@@ -7,51 +7,52 @@ import { SarsaExperience } from './sarsa';
 
 export class DQNSolver extends Solver {
   // Opts
-  public readonly isTraining: boolean;
   public readonly epsilon: number;
   public readonly epsilonMax: number;
   public readonly epsilonMin: number;
   public readonly epsilonPeriod: number;
   public readonly gamma: number;
-
+  
   public readonly alpha: number;
   public readonly doRewardClipping: any;
   public readonly experienceSize: number;
   public numberOfHiddenUnits: number;
-
+  
   public readonly delta: number;
   public readonly experienceAddEvery: number;
   public readonly learningStepsPerIteration: number;
-
+  
   // Env
   public numberOfStates: number;
   public numberOfActions: number;
-
+  
   // Local
   protected net: Net;
   protected previousGraph: Graph;
   protected shortTermMemory: SarsaExperience = { s0: null, a0: null, r0: null, s1: null, a1: null };
   protected longTermMemory: Array<SarsaExperience>;
+  protected isInTrainingMode: boolean;
   protected learnTick: number;
   protected memoryTick: number;
 
   constructor(env: Env, opt: DQNOpt) {
     super(env, opt);
-    this.isTraining = opt.get('isTraining');
     this.epsilon = opt.get('epsilon');
     this.epsilonMax = opt.get('epsilonMax');
     this.epsilonMin = opt.get('epsilonMin');
     this.epsilonPeriod = opt.get('epsilonPeriod');
     this.gamma = opt.get('gamma');
-
+    
     this.alpha = opt.get('alpha');
     this.doRewardClipping = opt.get('doRewardClipping');
     this.experienceSize = opt.get('experienceSize');
     this.numberOfHiddenUnits = opt.get('numberOfHiddenUnits');
-
+    
     this.experienceAddEvery = opt.get('experienceAddEvery');
     this.learningStepsPerIteration = opt.get('learningStepsPerIteration');
     this.delta = opt.get('delta');
+    
+    this.isInTrainingMode = opt.get('trainingMode');
 
     this.reset();
   }
@@ -78,6 +79,25 @@ export class DQNSolver extends Solver {
     this.shortTermMemory.a1 = null;
 
     this.longTermMemory = [];
+  }
+
+  /**
+   * Sets the training mode of the agent to the given state.
+   * given: true => training mode on, linearly decaying epsilon 
+   * given: false => deployment mode on, constant epsilon
+   * (Epsilon is the threshold for controlling the epsilon greedy policy (or exploration via random actions))
+   * @param trainingMode true if training mode should be switched on, false if training mode should be switched off
+   */
+  public setTrainingTo(trainingMode: boolean): void {
+    this.isInTrainingMode = trainingMode;
+  }
+
+  /**
+   * Returns the current state of training mode
+   * @returns true if is in training mode, else false.
+   */
+  public getTrainingMode(): boolean {
+    return this.isInTrainingMode;
   }
 
   /**
@@ -136,7 +156,7 @@ export class DQNSolver extends Solver {
    * Determines the current epsilon.
    */
   protected currentEpsilon(): number {
-    if (this.isTraining) {
+    if (this.isInTrainingMode) {
       if (this.learnTick < this.epsilonPeriod) {
         return this.epsilonMax - (this.epsilonMax - this.epsilonMin) / this.epsilonPeriod * this.learnTick;
       } else {

@@ -1,7 +1,7 @@
 import { Opt } from '../Opt';
 
 export class DQNOpt extends Opt {
-  protected isTraining: boolean = true;
+  protected trainingMode: boolean = true;
   protected numberOfHiddenUnits: number = 100;
   protected epsilon: number = 0.05;
   protected epsilonMax: number = 1.0;
@@ -29,8 +29,8 @@ export class DQNOpt extends Opt {
    * Sets the Epsilon Factor (Exploration Factor or Greedy Policy) during 'training' = false
    * @param epsilon value from [0,1); defaults to 0.2
    */
-  public setTrainingMode(isTraining: boolean): void {
-    this.isTraining = isTraining;
+  public setTrainingMode(trainingMode: boolean): void {
+    this.trainingMode = trainingMode;
   }
 
   /**
