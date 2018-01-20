@@ -88,7 +88,7 @@ export class DQNSolver extends Solver {
    * (Epsilon is the threshold for controlling the epsilon greedy policy (or exploration via random actions))
    * @param trainingMode true if training mode should be switched on, false if training mode should be switched off
    */
-  public setTrainingTo(trainingMode: boolean): void {
+  public setTrainingModeTo(trainingMode: boolean): void {
     this.isInTrainingMode = trainingMode;
   }
 
