@@ -6,16 +6,18 @@ export class DQNOpt extends Opt {
   protected epsilon: number = 0.05;
   protected epsilonMax: number = 1.0;
   protected epsilonMin: number = 0.1;
-  protected epsilonPeriod: number = 1e6;
+  protected epsilonDecayPeriod: number = 1e6;
   
-  protected doRewardClipping: boolean = true;
-  protected gamma: number = 0.75;
+  protected gamma: number = 0.9;
   protected alpha: number = 0.01;
-  protected experienceSize: number = 5000;
-  
-  protected learningStepsPerIteration: number = 10;
-  protected experienceAddEvery: number = 25;
+  protected experienceSize: number = 1e6;
+  protected doLossClipping: boolean = true;
   protected delta: number = 1.0;
+  protected doRewardClipping: boolean = true;
+  protected rewardClamp: number = 1.0;
+  
+  protected replayInterval: number = 25;
+  protected replaySteps: number = 10;
 
   /**
    * Sets the Value Function Learning Rate
@@ -37,12 +39,12 @@ export class DQNOpt extends Opt {
    * Defines a linear annealing of Epsilon for an Epsilon Greedy Policy during 'training' = true
    * @param epsilonMax upper bound of epsilon; defaults to 1.0
    * @param epsilonMin lower bound of epsilon; defaults to 0.1
-   * @param epsilonPeriod number of timesteps; defaults to 1e6
+   * @param epsilonDecayPeriod number of timesteps; defaults to 1e6
    */
-  public setEpsilonDecay(epsilonMax: number, epsilonMin: number, epsilonPeriod: number): void {
+  public setEpsilonDecay(epsilonMax: number, epsilonMin: number, epsilonDecayPeriod: number): void {
     this.epsilonMax = epsilonMax;
     this.epsilonMin = epsilonMin;
-    this.epsilonPeriod = epsilonPeriod;
+    this.epsilonDecayPeriod = epsilonDecayPeriod;
   }
 
   /**
@@ -63,15 +65,15 @@ export class DQNOpt extends Opt {
 
   /**
    * Sets the Number of Time Steps before another Experience is added to Replay Memory
-   * @param timesteps defaults to 5
+   * @param replayInterval defaults to 25
    */
-  public setExperienceAddEvery(experienceAddEvery: number): void {
-    this.experienceAddEvery = experienceAddEvery;
+  public setExperienceAddEvery(replayInterval: number): void {
+    this.replayInterval = replayInterval;
   }
 
   /**
    * Sets Replay Memory Size
-   * @param experienceReplay defaults to 10000
+   * @param experienceSize defaults to 1000000
    */
   public setExperienceSize(experienceSize: number): void {
     this.experienceSize = experienceSize;
@@ -79,10 +81,10 @@ export class DQNOpt extends Opt {
 
   /**
    * Sets the learning steps per iteration
-   * @param steps defaults to 5
+   * @param replaySteps defaults to 10
    */
-  public setLearningStepsPerIteration(learningStepsPerIteration: number): void {
-    this.learningStepsPerIteration = learningStepsPerIteration;
+  public setLearningStepsPerIteration(replaySteps: number): void {
+    this.replaySteps = replaySteps;
   }
 
   /**
@@ -107,5 +109,13 @@ export class DQNOpt extends Opt {
    */
   public setRewardClipping(doRewardClipping: boolean): void {
     this.doRewardClipping = doRewardClipping;
+  }
+
+  /**
+   * Activates or deactivates the Reward clipping to -1 or +1.
+   * @param rewardClamp defaults to 1.0
+   */
+  public setRewardClamp(rewardClamp: number): void {
+    this.rewardClamp = rewardClamp;
   }
 }

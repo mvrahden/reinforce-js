@@ -6,25 +6,28 @@ import { DQNOpt } from './DQNOpt';
 import { SarsaExperience } from './sarsa';
 
 export class DQNSolver extends Solver {
-  // Opts
-  public readonly epsilon: number;
-  public readonly epsilonMax: number;
-  public readonly epsilonMin: number;
-  public readonly epsilonPeriod: number;
-  public readonly gamma: number;
-  
-  public readonly alpha: number;
-  public readonly doRewardClipping: any;
-  public readonly experienceSize: number;
-  public numberOfHiddenUnits: number;
-  
-  public readonly delta: number;
-  public readonly experienceAddEvery: number;
-  public readonly learningStepsPerIteration: number;
   
   // Env
   public numberOfStates: number;
   public numberOfActions: number;
+
+  // Opts
+  public numberOfHiddenUnits: number;
+
+  public readonly epsilonMax: number;
+  public readonly epsilonMin: number;
+  public readonly epsilonDecayPeriod: number;
+  public readonly epsilon: number;
+  
+  public readonly gamma: number;
+  public readonly alpha: number;
+  public readonly doLossClipping: boolean;
+  public readonly delta: number;
+  public readonly doRewardClipping: any;
+  public readonly rewardClamp: any;
+  public readonly experienceSize: number;
+  public readonly replayInterval: number;
+  public readonly replaySteps: number;
   
   // Local
   protected net: Net;
@@ -37,20 +40,23 @@ export class DQNSolver extends Solver {
 
   constructor(env: Env, opt: DQNOpt) {
     super(env, opt);
-    this.epsilon = opt.get('epsilon');
-    this.epsilonMax = opt.get('epsilonMax');
-    this.epsilonMin = opt.get('epsilonMin');
-    this.epsilonPeriod = opt.get('epsilonPeriod');
-    this.gamma = opt.get('gamma');
-    
-    this.alpha = opt.get('alpha');
-    this.doRewardClipping = opt.get('doRewardClipping');
-    this.experienceSize = opt.get('experienceSize');
     this.numberOfHiddenUnits = opt.get('numberOfHiddenUnits');
     
-    this.experienceAddEvery = opt.get('experienceAddEvery');
-    this.learningStepsPerIteration = opt.get('learningStepsPerIteration');
+    this.epsilonMax = opt.get('epsilonMax');
+    this.epsilonMin = opt.get('epsilonMin');
+    this.epsilonDecayPeriod = opt.get('epsilonDecayPeriod');
+    this.epsilon = opt.get('epsilon');
+    
+    this.experienceSize = opt.get('experienceSize');
+    this.gamma = opt.get('gamma');
+    this.alpha = opt.get('alpha');
+    this.doLossClipping = opt.get('doLossClipping');
     this.delta = opt.get('delta');
+    this.doRewardClipping = opt.get('doRewardClipping');
+    this.rewardClamp = opt.get('rewardClamp');
+    
+    this.replayInterval = opt.get('replayInterval');
+    this.replaySteps = opt.get('replaySteps');
     
     this.isInTrainingMode = opt.get('trainingMode');
 
@@ -157,8 +163,8 @@ export class DQNSolver extends Solver {
    */
   protected currentEpsilon(): number {
     if (this.isInTrainingMode) {
-      if (this.learnTick < this.epsilonPeriod) {
-        return this.epsilonMax - (this.epsilonMax - this.epsilonMin) / this.epsilonPeriod * this.learnTick;
+      if (this.learnTick < this.epsilonDecayPeriod) {
+        return this.epsilonMax - (this.epsilonMax - this.epsilonMin) / this.epsilonDecayPeriod * this.learnTick;
       } else {
         return this.epsilonMin;
       }
@@ -190,7 +196,7 @@ export class DQNSolver extends Solver {
   }
 
 
-  protected determineActionVector(graph: Graph, stateVector: Mat) {
+  protected determineActionVector(graph: Graph, stateVector: Mat): Mat {
     const a2mat = this.net.forward(stateVector, graph);
     this.backupGraph(graph); // back this up. Kind of hacky isn't it
     return a2mat;
@@ -222,11 +228,11 @@ export class DQNSolver extends Solver {
   }
 
   /**
-   * Clips Reward, If rewardClipping is activated
+   * Clips Reward, If doRewardClipping is activated
    * @param r current reward
    */
   protected clipReward(r: number): number {
-    return this.doRewardClipping ? Math.sign(r) * Math.min(Math.abs(r), 1) : r;
+    return this.doRewardClipping ? Math.sign(r) * Math.min(Math.abs(r), this.rewardClamp) : r;
   }
 
   /**
@@ -237,11 +243,11 @@ export class DQNSolver extends Solver {
     const q1Max = this.getTargetQ(sarsa.s1, sarsa.r0);
     const lastActionVector = this.backwardQ(sarsa.s0);
     const q0Max = lastActionVector.w[sarsa.a0];
-    // Expected Loss function L_i = E [(r0 + gamma * Q'(s',a') - Q(s,a)) ^ 2]
+
     // Loss_i(w_i) = [(r0 + gamma * Q'(s',a') - Q(s,a)) ^ 2]
     let loss = q0Max - q1Max;
 
-    loss = this.huberLoss(loss);
+    loss = this.clipLoss(loss);
     lastActionVector.dw[sarsa.a0] = loss;
     this.previousGraph.backward();
 
@@ -250,19 +256,20 @@ export class DQNSolver extends Solver {
   }
 
   /**
-   * Limit loss to interval of [-delta, delta], e.g. [-1, 1]
+   * Clipp loss to interval of [-delta, delta], e.g. [-1, 1] (Derivative Huber Loss)
    * @returns {number} limited tdError
    */
-  protected huberLoss(loss: number): number {
-    if (loss > this.delta) {
-      loss = this.delta;
-    }
-    else if (loss < -this.delta) {
-      loss = -this.delta;
+  protected clipLoss(loss: number): number {
+    if(this.doLossClipping) {
+      if (loss > this.delta) {
+        loss = this.delta;
+      }
+      else if (loss < -this.delta) {
+        loss = -this.delta;
+      }
     }
     return loss;
   }
-
 
   protected getTargetQ(s1: Mat, r0: number): number {
     // want: Q(s,a) = r + gamma * max_a' Q(s',a')
@@ -273,13 +280,13 @@ export class DQNSolver extends Solver {
   }
 
   protected addToReplayMemory(): void {
-    if (this.learnTick % this.experienceAddEvery === 0) {
+    if (this.learnTick % this.replayInterval === 0) {
       this.addShortTermToLongTermMemory();
     }
     this.learnTick++;
   }
 
-  protected addShortTermToLongTermMemory() {
+  protected addShortTermToLongTermMemory(): void {
     const sarsa = this.extractSarsaExperience();
     this.longTermMemory[this.memoryTick] = sarsa;
     this.memoryTick++;
@@ -307,7 +314,7 @@ export class DQNSolver extends Solver {
    * Sample some additional experience (minibatches) from replay memory and learn from it
    */
   protected limitedSampledReplayLearning(): void {
-    for (let i = 0; i < this.learningStepsPerIteration; i++) {
+    for (let i = 0; i < this.replaySteps; i++) {
       const ri = R.randi(0, this.longTermMemory.length); // todo: priority sweeps?
       const sarsa = this.longTermMemory[ri];
       this.learnFromSarsaTuple(sarsa);
