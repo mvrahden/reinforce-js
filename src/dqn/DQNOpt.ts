@@ -12,7 +12,7 @@ export class DQNOpt extends Opt {
   protected alpha: number = 0.01;
   protected experienceSize: number = 1e6;
   protected doLossClipping: boolean = true;
-  protected delta: number = 1.0;
+  protected lossClamp: number = 1.0;
   protected doRewardClipping: boolean = true;
   protected rewardClamp: number = 1.0;
   
@@ -20,19 +20,11 @@ export class DQNOpt extends Opt {
   protected replaySteps: number = 10;
 
   /**
-   * Sets the Value Function Learning Rate
-   * @param alpha defaults to 0.005
+   * Sets the number of neurons in hidden layer
+   * @param numberOfHiddenUnits defaults to 100
    */
-  public setAlpha(alpha: number): void {
-    this.alpha = alpha;
-  }
-
-  /**
-   * Sets the Epsilon Factor (Exploration Factor or Greedy Policy) during 'training' = false
-   * @param epsilon value from [0,1); defaults to 0.2
-   */
-  public setTrainingMode(trainingMode: boolean): void {
-    this.trainingMode = trainingMode;
+  public setNumberOfHiddenUnits(numberOfHiddenUnits: number): void {
+    this.numberOfHiddenUnits = numberOfHiddenUnits;
   }
 
   /**
@@ -64,48 +56,32 @@ export class DQNOpt extends Opt {
   }
 
   /**
-   * Sets the Number of Time Steps before another Experience is added to Replay Memory
-   * @param replayInterval defaults to 25
+   * Sets the Value Function Learning Rate
+   * @param alpha defaults to 0.005
    */
-  public setExperienceAddEvery(replayInterval: number): void {
-    this.replayInterval = replayInterval;
-  }
-
-  /**
-   * Sets Replay Memory Size
-   * @param experienceSize defaults to 1000000
-   */
-  public setExperienceSize(experienceSize: number): void {
-    this.experienceSize = experienceSize;
-  }
-
-  /**
-   * Sets the learning steps per iteration
-   * @param replaySteps defaults to 10
-   */
-  public setLearningStepsPerIteration(replaySteps: number): void {
-    this.replaySteps = replaySteps;
-  }
-
-  /**
-   * Sets the delta (loss clamp) of the huber loss function for robustness
-   * @param delta defaults to 1.0
-   */
-  public setDelta(delta: number): void {
-    this.delta = delta;
-  }
-
-  /**
-   * Sets the number of neurons in hidden layer
-   * @param numberOfHiddenUnits defaults to 100
-   */
-  public setNumberOfHiddenUnits(numberOfHiddenUnits: number): void {
-    this.numberOfHiddenUnits = numberOfHiddenUnits;
+  public setAlpha(alpha: number): void {
+    this.alpha = alpha;
   }
 
   /**
    * Activates or deactivates the Reward clipping to -1 or +1.
-   * @param doRewardClipping defaults to true
+   * @param doLossClipping defaults to true (active)
+   */
+  public setLossClipping(doLossClipping: boolean): void {
+    this.doLossClipping = doLossClipping;
+  }
+
+  /**
+   * Sets the loss clamp for robustness
+   * @param lossClamp defaults to 1.0
+   */
+  public setLossClamp(lossClamp: number): void {
+    this.lossClamp = lossClamp;
+  }
+
+  /**
+   * Activates or deactivates the Reward clipping to -1 or +1.
+   * @param doRewardClipping defaults to true (active)
    */
   public setRewardClipping(doRewardClipping: boolean): void {
     this.doRewardClipping = doRewardClipping;
@@ -117,5 +93,37 @@ export class DQNOpt extends Opt {
    */
   public setRewardClamp(rewardClamp: number): void {
     this.rewardClamp = rewardClamp;
+  }
+
+  /**
+   * Sets the Epsilon Factor (Exploration Factor or Greedy Policy) during 'training' = false
+   * @param epsilon value from [0,1); defaults to 0.2
+   */
+  public setTrainingMode(trainingMode: boolean): void {
+    this.trainingMode = trainingMode;
+  }
+
+  /**
+   * Sets Replay Memory Size
+   * @param experienceSize defaults to 1000000
+   */
+  public setExperienceSize(experienceSize: number): void {
+    this.experienceSize = experienceSize;
+  }
+
+  /**
+   * Sets the amount of time steps before another experience is added to replay memory
+   * @param replayInterval defaults to 25
+   */
+  public setReplayInterval(replayInterval: number): void {
+    this.replayInterval = replayInterval;
+  }
+
+  /**
+   * Sets the amount of memory replays per iteration
+   * @param replaySteps defaults to 10
+   */
+  public setReplaySteps(replaySteps: number): void {
+    this.replaySteps = replaySteps;
   }
 }

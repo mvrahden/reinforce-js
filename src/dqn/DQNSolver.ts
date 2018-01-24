@@ -22,7 +22,7 @@ export class DQNSolver extends Solver {
   public readonly gamma: number;
   public readonly alpha: number;
   public readonly doLossClipping: boolean;
-  public readonly delta: number;
+  public readonly lossClamp: number;
   public readonly doRewardClipping: any;
   public readonly rewardClamp: any;
   public readonly experienceSize: number;
@@ -51,7 +51,7 @@ export class DQNSolver extends Solver {
     this.gamma = opt.get('gamma');
     this.alpha = opt.get('alpha');
     this.doLossClipping = opt.get('doLossClipping');
-    this.delta = opt.get('delta');
+    this.lossClamp = opt.get('lossClamp');
     this.doRewardClipping = opt.get('doRewardClipping');
     this.rewardClamp = opt.get('rewardClamp');
     
@@ -261,11 +261,11 @@ export class DQNSolver extends Solver {
    */
   protected clipLoss(loss: number): number {
     if(this.doLossClipping) {
-      if (loss > this.delta) {
-        loss = this.delta;
+      if (loss > this.lossClamp) {
+        loss = this.lossClamp;
       }
-      else if (loss < -this.delta) {
-        loss = -this.delta;
+      else if (loss < -this.lossClamp) {
+        loss = -this.lossClamp;
       }
     }
     return loss;
