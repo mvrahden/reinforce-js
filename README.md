@@ -1,19 +1,19 @@
 # REINFORCE-js
 [![js-google-style](https://img.shields.io/badge/code%20style-google-blue.svg)](https://google.github.io/styleguide/jsguide.html)
 
+[dqn-solver]: examples/dqn-solver.md
+[dqn-solver-src]: examples/dqn/dqn-solver.md
+[td-solver-src]: examples/td/td-solver.md
+
 **REINFORCE-js** is an object-oriented Javascript (baked with [Typescript](https://github.com/Microsoft/TypeScript)) port of _Andrej Karpathy's_ Reinforcement Learning library that implements several common RL algorithms.
 In particular, the library currently includes:
 
+* **Deep Q-Learning** for Q-Learning with function approximation with Neural Networks ([DQNSolver Details][dqn-solver])
 * **Dynamic Programming** methods
 * (Tabular) **Temporal Difference Learning** (SARSA/Q-Learning)
-* **Deep Q-Learning** for Q-Learning with function approximation with Neural Networks
 * **Stochastic/Deterministic Policy Gradients** and Actor Critic architectures for dealing with continuous action spaces. (_very alpha, likely buggy or at the very least finicky and inconsistent_)
 
 For further Information see the [reinforce-js](https://github.com/karpathy/reinforcejs) repository.
-
-### Work in Progress
-Please be aware that this repository is still _under construction_. Changes are likely to happen.
-There are still classes to be added, e.g. *DPSolver*, *SimpleReinforcementSolver*, *RecurrentReinforcementSolver*, *DeterministPG* and their individual *Opts* and *Envs*
 
 ## Use as Project Dependency
 
@@ -37,12 +37,12 @@ Currently exposed Classes (more to be expected soon):
 * **Env** - Generic *Environment* for a Solver
 * **Opt** - Generic *Options* for a Solver
 
-DQN-Solver: ([Code-Example](src/dqn/dqn-solver.md))
+DQN-Solver: ([Code-Example][dqn-solver-src] and [General Information][dqn-solver])
 * **DQNSolver** - Concrete *Deep Q-Learning* Solver
 * **DQNOpt** - Concrete *Options* for DQNSolver creation
 * **DQNEnv** - Concrete *Environment* for DQNSolver creation
 
-TD-Solver: ([Code-Example](src/td/td-solver.md))
+TD-Solver: ([Code-Example][td-solver-src])
 * **TDSolver** - Concrete *Temporal Difference* Solver
 * **TDOpt** - Concrete *Options* for TDSolver creation
 * **TDEnv** - Concrete *Environment* for TDSolver creation
@@ -92,6 +92,10 @@ This Library relies on the object-oriented _Deep Recurrent Neural Network_ libra
 
 * **GitHub**: [recurrent-js](https://github.com/mvrahden/recurrent-js)
 * **npm**: [recurrent-js](https://www.npmjs.com/package/recurrent-js)
+
+### Work in Progress
+Please be aware that this repository is still _under construction_. Changes are likely to happen.
+There are still classes to be added, e.g. *DPSolver*, *SimpleReinforcementSolver*, *RecurrentReinforcementSolver*, *DeterministPG* and their individual *Opts* and *Envs*
 
 ## License
 
