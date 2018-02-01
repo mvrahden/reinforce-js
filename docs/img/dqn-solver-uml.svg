@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" viewBox="298 -221 439 201" width="439pt" height="201pt" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <metadata> Produced by OmniGraffle 7.2.2 
+    <dc:date>2018-01-24 14:34:29 +0000</dc:date>
+  </metadata>
+  <defs>
+    <filter id="Shadow" filterUnits="userSpaceOnUse">
+      <feGaussianBlur in="SourceAlpha" result="blur" stdDeviation=".872"/>
+      <feOffset in="blur" result="offset" dx="0" dy=".5"/>
+      <feFlood flood-color="black" flood-opacity=".25" result="flood"/>
+      <feComposite in="flood" in2="offset" operator="in"/>
+    </filter>
+    <font-face font-family="Helvetica" font-size="12" units-per-em="1000" underline-position="-75.68359" underline-thickness="49.316406" slope="0" x-height="532.22656" cap-height="719.7266" ascent="770.0195" descent="-229.98047" font-weight="bold">
+      <font-face-src>
+        <font-face-name name="Helvetica-Bold"/>
+      </font-face-src>
+    </font-face>
+    <marker orient="auto" overflow="visible" markerUnits="strokeWidth" id="FilledDiamond_Marker" viewBox="-13 -6 14 12" markerWidth="14" markerHeight="12" color="black">
+      <g>
+        <path d="M -12 0 L -6 4.5 L 0 0 L -6 -4.5 Z" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+      </g>
+    </marker>
+    <font-face font-family="Menlo" font-size="9" panose-1="2 11 6 9 3 8 4 2 2 4" units-per-em="1000" underline-position="-63.47656" underline-thickness="43.94531" slope="0" x-height="546.875" cap-height="729.0039" ascent="928.2227" descent="-235.83984" font-weight="500">
+      <font-face-src>
+        <font-face-name name="Menlo-Regular"/>
+      </font-face-src>
+    </font-face>
+  </defs>
+  <g stroke="none" stroke-opacity="1" stroke-dasharray="none" fill="none" fill-opacity="1">
+    <title>Canvas 1</title>
+    <g>
+      <title>WorldObjects</title>
+      <g>
+        <xl:use xl:href="#id115854_Graphic" filter="url(#Shadow)"/>
+        <xl:use xl:href="#id115855_Graphic" filter="url(#Shadow)"/>
+      </g>
+      <g id="id115854_Graphic">
+        <rect x="644" y="-183.56543" width="90" height="36" fill="white"/>
+        <rect x="644" y="-183.56543" width="90" height="36" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width=".5"/>
+        <text transform="translate(649 -172.56543)" fill="black">
+          <tspan font-family="Helvetica" font-size="12" font-weight="bold" x="15.663086" y="11" textLength="48.67383">DQNEnv</tspan>
+        </text>
+      </g>
+      <g id="id115855_Graphic">
+        <rect x="644" y="-133.8916" width="90" height="36" fill="white"/>
+        <rect x="644" y="-133.8916" width="90" height="36" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width=".5"/>
+        <text transform="translate(649 -122.8916)" fill="black">
+          <tspan font-family="Helvetica" font-size="12" font-weight="bold" x="16.336914" y="11" textLength="47.32617">DQNOpt</tspan>
+        </text>
+      </g>
+      <line x1="644" y1="-165.56543" x2="621.6731" y2="-165.8916" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      <line x1="644" y1="-115.8916" x2="621.5" y2="-115.8916" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      <line x1="621.5" y1="-165.8916" x2="621.5" y2="-116.3916" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      <path d="M 608.25 -140.72137 L 618.86816 -140.71565 L 621.5 -140.71565" marker-start="url(#FilledDiamond_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+    </g>
+    <g>
+      <title>DQNSolver</title>
+      <g>
+        <xl:use xl:href="#id115851_Graphic" filter="url(#Shadow)"/>
+        <xl:use xl:href="#id115852_Graphic" filter="url(#Shadow)"/>
+        <xl:use xl:href="#id115853_Graphic" filter="url(#Shadow)"/>
+      </g>
+      <g id="id115851_Graphic">
+        <rect x="300.5" y="-219.15234" width="294.5" height="36" fill="white"/>
+        <rect x="300.5" y="-219.15234" width="294.5" height="36" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width=".5"/>
+        <text transform="translate(305.5 -208.15234)" fill="black">
+          <tspan font-family="Helvetica" font-size="12" font-weight="bold" x="110.57422" y="11" textLength="63.35156">DQNSolver</tspan>
+        </text>
+      </g>
+      <g id="id115852_Graphic">
+        <rect x="300.5" y="-183.15234" width="294.5" height="80.15234" fill="white"/>
+        <rect x="300.5" y="-183.15234" width="294.5" height="80.15234" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width=".5"/>
+        <text transform="translate(305.5 -178.15234)" fill="black">
+          <tspan font-family="Menlo" font-size="9" font-weight="500" x="0" y="8" textLength="10.836914"># </tspan>
+          <tspan font-family="Menlo" font-size="9" font-weight="500" x="10.836914" y="8" textLength="16.255371">env</tspan>
+          <tspan font-family="Menlo" font-size="9" font-weight="500" x="27.092285" y="8" textLength="43.347656">: DQNEnv</tspan>
+          <tspan font-family="Menlo" font-size="9" font-weight="500" x="0" y="18" textLength="10.836914"># </tspan>
+          <tspan font-family="Menlo" font-size="9" font-weight="500" x="10.836914" y="18" textLength="16.255371">opt</tspan>
+          <tspan font-family="Menlo" font-size="9" font-weight="500" x="27.092285" y="18" textLength="43.347656">: DQNOpt</tspan>
+          <tspan font-family="Menlo" font-size="9" font-weight="500" x="0" y="28" textLength="10.836914"># </tspan>
+          <tspan font-family="Menlo" font-size="9" font-weight="500" x="10.836914" y="28" textLength="16.255371">net</tspan>
+          <tspan font-family="Menlo" font-size="9" font-weight="500" x="27.092285" y="28" textLength="27.092285">: Net</tspan>
+          <tspan font-family="Menlo" font-size="9" font-weight="500" x="0" y="38" textLength="119.20605"># previousGraph: Graph</tspan>
+          <tspan font-family="Menlo" font-size="9" font-weight="500" x="0" y="48" textLength="184.22754"># shortTermMemory: SarsaExperience</tspan>
+          <tspan font-family="Menlo" font-size="9" font-weight="500" x="0" y="58" textLength="216.73828"># longTermMemory: Array&lt;SarsaExperience&gt;</tspan>
+          <tspan font-family="Menlo" font-size="9" font-weight="500" x="0" y="68" textLength="146.29834"># isInTrainingMode: boolean</tspan>
+        </text>
+      </g>
+      <g id="id115853_Graphic">
+        <rect x="300.5" y="-103" width="294.5" height="80.15234" fill="white"/>
+        <rect x="300.5" y="-103" width="294.5" height="80.15234" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width=".5"/>
+        <text transform="translate(305.5 -98)" fill="black">
+          <tspan font-family="Menlo" font-size="9" font-weight="500" x="0" y="8" textLength="200.4829">+ DQNSolver(env: DQNEnv, opt: DQNOpt)</tspan>
+          <tspan font-family="Menlo" font-size="9" font-weight="500" x="0" y="28" textLength="260.08594">+ setTrainingModeTo(trainingMode: boolean): void</tspan>
+          <tspan font-family="Menlo" font-size="9" font-weight="500" x="0" y="38" textLength="151.7168">+ getTrainingMode(): boolean</tspan>
+          <tspan font-family="Menlo" font-size="9" font-weight="500" x="0" y="58" textLength="189.646">+ decide(state: Array&lt;double&gt;): int</tspan>
+          <tspan font-family="Menlo" font-size="9" font-weight="500" x="0" y="68" textLength="130.04297">+ learn(r: double): void</tspan>
+        </text>
+      </g>
+    </g>
+  </g>
+</svg>
