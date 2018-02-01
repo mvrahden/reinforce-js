@@ -6,7 +6,7 @@ The `DQNSolver` allows to take actions in an environment and adapt it's decision
 
 The following UML-Class diagram shows the composition of the Solver:
 
-<img src="../docs/img/dqn-solver-uml.svg" width="400px" height="200px"></img>
+<img src="../docs/img/dqn-solver-uml.svg" width="550px" height="250px"></img>
 
 The construction of a solver requires instances of the Classes `DQNEnv` and `DQNOpt`. These instances provide all necessary information about the environment and the decision-making and learning of the Agent.
 
