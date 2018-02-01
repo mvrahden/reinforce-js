@@ -2,8 +2,8 @@
 [![js-google-style](https://img.shields.io/badge/code%20style-google-blue.svg)](https://google.github.io/styleguide/jsguide.html)
 
 [dqn-solver]: examples/dqn-solver.md
-[dqn-solver-src]: examples/dqn/dqn-solver.md
-[td-solver-src]: examples/td/td-solver.md
+[dqn-solver-src]: examples/dqn-solver.md
+[td-solver-src]: examples/td-solver.md
 
 **REINFORCE-js** is an object-oriented Javascript (baked with [Typescript](https://github.com/Microsoft/TypeScript)) port of _Andrej Karpathy's_ Reinforcement Learning library that implements several common RL algorithms.
 In particular, the library currently includes:
