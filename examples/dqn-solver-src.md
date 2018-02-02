@@ -13,6 +13,7 @@ import { DQNSolver, DQNOpt, DQNEnv } from 'reinforce-js';
 
 // JavaScript
 // const DQNSolver = require('reinforce-js').DQNSolver;
+// const DQNEnv = require('reinforce-js').DQNEnv;
 // const DQNOpt = require('reinforce-js').DQNOpt;
 
 const width = 400;
