@@ -36,7 +36,7 @@ export class DQNSolver extends Solver {
   protected longTermMemory: Array<SarsaExperience>;
   protected isInTrainingMode: boolean;
   protected learnTick: number;
-  protected memoryTick: number;
+  protected memoryIndexTick: number;
 
   constructor(env: Env, opt: DQNOpt) {
     super(env, opt);
@@ -75,8 +75,8 @@ export class DQNSolver extends Solver {
     };
     this.net = new Net(netOpts);
 
-    this.memoryTick = 0;
     this.learnTick = 0;
+    this.memoryIndexTick = 0;
     
     this.shortTermMemory.s0 = null;
     this.shortTermMemory.a0 = null;
@@ -147,7 +147,7 @@ export class DQNSolver extends Solver {
   }
 
   protected epsilonGreedyActionPolicy(stateVector: Mat): number {
-    let actionIndex: number = 0;
+    let actionIndex = 0;
     if (Math.random() < this.currentEpsilon()) { // greedy Policy Filter
       actionIndex = R.randi(0, this.numberOfActions);
     } else {
@@ -288,10 +288,10 @@ export class DQNSolver extends Solver {
 
   protected addShortTermToLongTermMemory(): void {
     const sarsa = this.extractSarsaExperience();
-    this.longTermMemory[this.memoryTick] = sarsa;
-    this.memoryTick++;
-    if (this.memoryTick > this.experienceSize - 1) { // roll over
-      this.memoryTick = 0;
+    this.longTermMemory[this.memoryIndexTick] = sarsa;
+    this.memoryIndexTick++;
+    if (this.memoryIndexTick > this.experienceSize - 1) { // roll over
+      this.memoryIndexTick = 0;
     }
   }
 

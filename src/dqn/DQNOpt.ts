@@ -3,10 +3,10 @@ import { Opt } from '../Opt';
 export class DQNOpt extends Opt {
   protected trainingMode: boolean = true;
   protected numberOfHiddenUnits: number = 100;
-  protected epsilon: number = 0.05;
   protected epsilonMax: number = 1.0;
   protected epsilonMin: number = 0.1;
   protected epsilonDecayPeriod: number = 1e6;
+  protected epsilon: number = 0.05;
   
   protected gamma: number = 0.9;
   protected alpha: number = 0.01;
@@ -41,7 +41,7 @@ export class DQNOpt extends Opt {
 
   /**
    * Sets the Epsilon Factor (Exploration Factor or Greedy Policy) during 'training' = false
-   * @param epsilon value from [0,1); defaults to 0.2
+   * @param epsilon value from [0,1); defaults to 0.05
    */
   public setEpsilon(epsilon: number): void {
     this.epsilon = epsilon;
@@ -57,7 +57,7 @@ export class DQNOpt extends Opt {
 
   /**
    * Sets the Value Function Learning Rate
-   * @param alpha defaults to 0.005
+   * @param alpha defaults to 0.01
    */
   public setAlpha(alpha: number): void {
     this.alpha = alpha;
@@ -96,8 +96,8 @@ export class DQNOpt extends Opt {
   }
 
   /**
-   * Sets the Epsilon Factor (Exploration Factor or Greedy Policy) during 'training' = false
-   * @param epsilon value from [0,1); defaults to 0.2
+   * Activates or deactivated the Training Mode of the Solver.
+   * @param trainingMode defaults to true (active)
    */
   public setTrainingMode(trainingMode: boolean): void {
     this.trainingMode = trainingMode;
@@ -105,7 +105,7 @@ export class DQNOpt extends Opt {
 
   /**
    * Sets Replay Memory Size
-   * @param experienceSize defaults to 1000000
+   * @param experienceSize defaults to 1e6
    */
   public setExperienceSize(experienceSize: number): void {
     this.experienceSize = experienceSize;
