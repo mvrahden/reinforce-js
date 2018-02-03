@@ -16,7 +16,7 @@ export class DQNOpt extends Opt {
   protected doRewardClipping: boolean = true;
   protected rewardClamp: number = 1.0;
   
-  protected replayInterval: number = 25;
+  protected keepExperienceInterval: number = 25;
   protected replaySteps: number = 10;
 
   /**
@@ -113,10 +113,10 @@ export class DQNOpt extends Opt {
 
   /**
    * Sets the amount of time steps before another experience is added to replay memory
-   * @param replayInterval defaults to 25
+   * @param keepExperienceInterval defaults to 25
    */
-  public setReplayInterval(replayInterval: number): void {
-    this.replayInterval = replayInterval;
+  public setReplayInterval(keepExperienceInterval: number): void {
+    this.keepExperienceInterval = keepExperienceInterval;
   }
 
   /**

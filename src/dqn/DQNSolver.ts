@@ -26,7 +26,7 @@ export class DQNSolver extends Solver {
   public readonly doRewardClipping: any;
   public readonly rewardClamp: any;
   public readonly experienceSize: number;
-  public readonly replayInterval: number;
+  public readonly keepExperienceInterval: number;
   public readonly replaySteps: number;
   
   // Local
@@ -55,7 +55,7 @@ export class DQNSolver extends Solver {
     this.doRewardClipping = opt.get('doRewardClipping');
     this.rewardClamp = opt.get('rewardClamp');
     
-    this.replayInterval = opt.get('replayInterval');
+    this.keepExperienceInterval = opt.get('keepExperienceInterval');
     this.replaySteps = opt.get('replaySteps');
     
     this.isInTrainingMode = opt.get('trainingMode');
@@ -280,7 +280,7 @@ export class DQNSolver extends Solver {
   }
 
   protected addToReplayMemory(): void {
-    if (this.learnTick % this.replayInterval === 0) {
+    if (this.learnTick % this.keepExperienceInterval === 0) {
       this.addShortTermToLongTermMemory();
     }
     this.learnTick++;
