@@ -219,12 +219,15 @@ export class DQNSolver extends Solver {
    */
   public learn(r: number): void {
     if (this.shortTermMemory.r0 && this.alpha > 0) {
-      r = this.clipReward(r);
-      this.learnFromSarsaTuple(this.shortTermMemory); // a measure of surprise
+      this.learnFromSarsaTuple(this.shortTermMemory);
       this.addToReplayMemory();
       this.limitedSampledReplayLearning();
     }
-    this.shortTermMemory.r0 = r; // store reward for next update
+    this.shiftRewardIntoMemory(r);
+  }
+
+  private shiftRewardIntoMemory(r: number) {
+    this.shortTermMemory.r0 = this.clipReward(r);
   }
 
   /**
@@ -241,34 +244,18 @@ export class DQNSolver extends Solver {
    */
   protected learnFromSarsaTuple(sarsa: SarsaExperience): void {
     const q1Max = this.getTargetQ(sarsa.s1, sarsa.r0);
-    const lastActionVector = this.backwardQ(sarsa.s0);
-    const q0Max = lastActionVector.w[sarsa.a0];
+    const q0ActionVector = this.backwardQ(sarsa.s0);
+    const q0Max = q0ActionVector.w[sarsa.a0];
 
     // Loss_i(w_i) = [(r0 + gamma * Q'(s',a') - Q(s,a)) ^ 2]
     let loss = q0Max - q1Max;
-
     loss = this.clipLoss(loss);
-    lastActionVector.dw[sarsa.a0] = loss;
+
+    q0ActionVector.dw[sarsa.a0] = loss;
     this.previousGraph.backward();
 
     // discount all weights of net by: w[i] = w[i] - (alpha * dw[i]);
     this.net.update(this.alpha);
-  }
-
-  /**
-   * Clipp loss to interval of [-delta, delta], e.g. [-1, 1] (Derivative Huber Loss)
-   * @returns {number} limited tdError
-   */
-  protected clipLoss(loss: number): number {
-    if(this.doLossClipping) {
-      if (loss > this.lossClamp) {
-        loss = this.lossClamp;
-      }
-      else if (loss < -this.lossClamp) {
-        loss = -this.lossClamp;
-      }
-    }
-    return loss;
   }
 
   protected getTargetQ(s1: Mat, r0: number): number {
@@ -277,6 +264,22 @@ export class DQNSolver extends Solver {
     const targetActionIndex = R.maxi(targetActionVector.w);
     const qMax = r0 + this.gamma * targetActionVector.w[targetActionIndex];
     return qMax;
+  }
+
+  /**
+   * Clipp loss to interval of [-delta, delta], e.g. [-1, 1] (Derivative Huber Loss)
+   * @returns {number} limited tdError
+   */
+  protected clipLoss(loss: number): number {
+    if (this.doLossClipping) {
+      if (loss > this.lossClamp) {
+        loss = this.lossClamp;
+      }
+      else if (loss < -this.lossClamp) {
+        loss = -this.lossClamp;
+      }
+    }
+    return loss;
   }
 
   protected addToReplayMemory(): void {
