@@ -1,14 +1,14 @@
-# REINFORCE-js
+# reinforce-js
 [![js-google-style](https://img.shields.io/badge/code%20style-google-blue.svg)](https://google.github.io/styleguide/jsguide.html)
 
 [dqn-solver]: examples/dqn-solver.md
 [dqn-solver-src]: examples/dqn-solver-src.md
 [td-solver-src]: examples/td-solver-src.md
 
-**REINFORCE-js** is an object-oriented Javascript (baked with [Typescript](https://github.com/Microsoft/TypeScript)) port of _Andrej Karpathy's_ Reinforcement Learning library that implements several common RL algorithms.
+**The reinforce-js library** &ndash; is a collection of multiple machine learning solver. The library is an object-oriented approach and tries to deliver simplified interfaces to abstract away the details of the algorithms (baked with [Typescript](https://github.com/Microsoft/TypeScript)). More over it is an extension of _Andrej Karpathy's_ reinforcement learning library that implements several common RL algorithms.
 In particular, the library currently includes:
 
-* **Deep Q-Learning** for Q-Learning with function approximation with Neural Networks ([DQNSolver Details][dqn-solver])
+* **Deep Q-Learning** for Q-Learning with function approximation with Neural Networks ([DQNSolver Details][dqn-solver] and related [Google DeepMind Paper](https://www.nature.com/articles/nature14236))
 * **Dynamic Programming** methods
 * (Tabular) **Temporal Difference Learning** (SARSA/Q-Learning)
 * **Stochastic/Deterministic Policy Gradients** and Actor Critic architectures for dealing with continuous action spaces. (_very alpha, likely buggy or at the very least finicky and inconsistent_)
@@ -41,6 +41,7 @@ DQN-Solver: ([Code-Example][dqn-solver-src] and [General Information][dqn-solver
 * **DQNSolver** - Concrete *Deep Q-Learning* Solver
 * **DQNOpt** - Concrete *Options* for DQNSolver creation
 * **DQNEnv** - Concrete *Environment* for DQNSolver creation
+* **Example Application**: [Learning Agents](https://mvrahden.github.io/learning-agents) (GitHub Page)
 
 TD-Solver: ([Code-Example][td-solver-src])
 * **TDSolver** - Concrete *Temporal Difference* Solver
@@ -70,9 +71,9 @@ const DQNOpt = require('reinforce-js').DQNOpt;
 const DQNEnv = require('reinforce-js').DQNEnv;
 ```
 
-## Further Info for Production Usage
+### Example Application
 
-The transpiled Javascript-target is `ES6`, with a `CommonJS` module format.
+See [Learning Agents](https://mvrahden.github.io/learning-agents) (GitHub Page).
 
 ## For Contributors
 
