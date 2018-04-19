@@ -1,4 +1,4 @@
-import { R } from 'recurrent-js';
+import { Utils } from 'recurrent-js';
 
 import { Solver } from './../Solver';
 import { TDEnv } from './TDEnv';
@@ -20,13 +20,13 @@ export class TDSolver extends Solver {
   protected numberOfActions: number;
   protected numberOfStates: number;
 
-  protected pq: Array<number>;
+  protected pq: Array<number> | Float64Array;
   protected saSeen: Array<number>;
-  protected envModelR: Array<number>;
-  protected envModelS: Array<number>;
-  protected eligibilityTraces: Array<number>;
-  protected randomPolicies: Array<number>;
-  protected Q: Array<number>;
+  protected envModelR: Array<number> | Float64Array;
+  protected envModelS: Array<number> | Float64Array;
+  protected eligibilityTraces: Array<number> | Float64Array;
+  protected randomPolicies: Array<number> | Float64Array;
+  protected Q: Array<number> | Float64Array;
   protected explored: boolean;
   protected a1: number;
   protected s1: number;
@@ -69,17 +69,17 @@ export class TDSolver extends Solver {
     // reset the agent's policy and value function
     this.numberOfStates = this.env.get('numberOfStates');
     this.numberOfActions = this.env.get('numerOfActions');
-    this.Q = R.zeros(this.numberOfStates * this.numberOfActions);
-    if (this.qInitValue !== 0) { R.setConst(this.Q, this.qInitValue); }
-    this.randomPolicies = R.zeros(this.numberOfStates * this.numberOfActions);
-    this.eligibilityTraces = R.zeros(this.numberOfStates * this.numberOfActions);
+    this.Q = Utils.zeros(this.numberOfStates * this.numberOfActions);
+    if (this.qInitValue !== 0) { Utils.fillConst(this.Q, this.qInitValue); }
+    this.randomPolicies = Utils.zeros(this.numberOfStates * this.numberOfActions);
+    this.eligibilityTraces = Utils.zeros(this.numberOfStates * this.numberOfActions);
 
     // model/planning vars
-    this.envModelS = R.zeros(this.numberOfStates * this.numberOfActions);
-    R.setConst(this.envModelS, -1); // init to -1 so we can test if we saw the state before
-    this.envModelR = R.zeros(this.numberOfStates * this.numberOfActions);
+    this.envModelS = Utils.zeros(this.numberOfStates * this.numberOfActions);
+    Utils.fillConst(this.envModelS, -1); // init to -1 so we can test if we saw the state before
+    this.envModelR = Utils.zeros(this.numberOfStates * this.numberOfActions);
     this.saSeen = [];
-    this.pq = R.zeros(this.numberOfStates * this.numberOfActions);
+    this.pq = Utils.zeros(this.numberOfStates * this.numberOfActions);
 
     // initialize uniform random policy
     for (let state = 0; state < this.numberOfStates; state++) {
@@ -107,7 +107,7 @@ export class TDSolver extends Solver {
     // act according to epsilon greedy policy
     // TODO: state comes from Gridworld_td --> Environment??
     const allowedActions = this.env.allowedActions(state);
-    const probs = [];
+    const probs = new Array<number>();
 
     for (let i = 0; i < allowedActions.length; i++) {
       probs.push(this.randomPolicies[allowedActions[i] * this.numberOfStates + state]);
@@ -128,14 +128,14 @@ export class TDSolver extends Solver {
     this.a1 = actionIndex;
   }
 
-  private epsilonGreedyActionPolicy(poss: number[], probs: any[]) {
+  private epsilonGreedyActionPolicy(poss: number[], probs: number[]) {
     let actionIndex: number = 0;
     if (Math.random() < this.epsilon) {
-      actionIndex = poss[R.randi(0, poss.length)]; // random available action
+      actionIndex = poss[Utils.randi(0, poss.length)]; // random available action
       this.explored = true;
     }
     else {
-      actionIndex = poss[R.sampleWeighted(probs)];
+      actionIndex = poss[Utils.sampleWeighted(probs)];
       this.explored = false;
     }
     return actionIndex;
@@ -185,7 +185,7 @@ export class TDSolver extends Solver {
         this.eligibilityTraces[sa] += 1;
       }
       const decay = lambda * this.gamma;
-      const stateUpdate = R.zeros(this.numberOfStates);
+      const stateUpdate = Utils.zeros(this.numberOfStates);
       for (let s = 0; s < this.numberOfStates; s++) {
         const poss = this.env.allowedActions(s);
         for (let i = 0; i < poss.length; i++) {
@@ -207,7 +207,7 @@ export class TDSolver extends Solver {
       }
       if (this.explored && this.update === 'qlearn') {
         // have to wipe the trace since q learning is off-policy :(
-        this.eligibilityTraces = R.zeros(this.numberOfStates * this.numberOfActions);
+        this.eligibilityTraces = Utils.zeros(this.numberOfStates * this.numberOfActions);
       }
     } else {
       // simpler and faster update without eligibility trace
@@ -259,7 +259,7 @@ export class TDSolver extends Solver {
       if (this.update === 'sarsa') {
         // generate random action?...
         const poss = this.env.allowedActions(s1);
-        const a1 = poss[R.randi(0, poss.length)];
+        const a1 = poss[Utils.randi(0, poss.length)];
       }
       this.learnFromTuple(s0, a0, r0, s1, a1, 0); // note lambda = 0 - shouldnt use eligibility trace here
     }

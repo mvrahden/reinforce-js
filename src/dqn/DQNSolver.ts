@@ -1,4 +1,4 @@
-import { Net, Graph, Mat, RandMat, R } from 'recurrent-js';
+import { Net, Graph, Mat, Utils } from 'recurrent-js';
 
 import { Solver } from '../Solver';
 import { Env } from '../Env';
@@ -70,7 +70,7 @@ export class DQNSolver extends Solver {
 
     const netOpts = {
       inputSize: this.numberOfStates,
-      hiddenSize: this.numberOfHiddenUnits,
+      hiddenUnits: this.numberOfHiddenUnits,
       outputSize: this.numberOfActions
     };
     this.net = new Net(netOpts);
@@ -149,11 +149,11 @@ export class DQNSolver extends Solver {
   protected epsilonGreedyActionPolicy(stateVector: Mat): number {
     let actionIndex = 0;
     if (Math.random() < this.currentEpsilon()) { // greedy Policy Filter
-      actionIndex = R.randi(0, this.numberOfActions);
+      actionIndex = Utils.randi(0, this.numberOfActions);
     } else {
       // Q function
       const actionVector = this.forwardQ(stateVector);
-      actionIndex = R.maxi(actionVector.w); // returns index of argmax action 
+      actionIndex = Utils.maxi(actionVector.w); // returns index of argmax action 
     }
     return actionIndex;
   }
@@ -254,14 +254,14 @@ export class DQNSolver extends Solver {
     q0ActionVector.dw[sarsa.a0] = loss;
     this.previousGraph.backward();
 
-    // discount all weights of net by: w[i] = w[i] - (alpha * dw[i]);
+    // discount all weights of net depending on their gradients
     this.net.update(this.alpha);
   }
 
   protected getTargetQ(s1: Mat, r0: number): number {
     // want: Q(s,a) = r + gamma * max_a' Q(s',a')
     const targetActionVector = this.forwardQ(s1);
-    const targetActionIndex = R.maxi(targetActionVector.w);
+    const targetActionIndex = Utils.maxi(targetActionVector.w);
     const qMax = r0 + this.gamma * targetActionVector.w[targetActionIndex];
     return qMax;
   }
@@ -318,7 +318,7 @@ export class DQNSolver extends Solver {
    */
   protected limitedSampledReplayLearning(): void {
     for (let i = 0; i < this.replaySteps; i++) {
-      const ri = R.randi(0, this.longTermMemory.length); // todo: priority sweeps?
+      const ri = Utils.randi(0, this.longTermMemory.length); // todo: priority sweeps?
       const sarsa = this.longTermMemory[ri];
       this.learnFromSarsaTuple(sarsa);
     }
