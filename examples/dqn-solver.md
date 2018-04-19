@@ -30,7 +30,7 @@ The construction of a solver requires instances of the Classes `DQNEnv` and `DQN
 
 ## State-Action-Reward Scheme
 
-The solver provides primarily two methods. The `decide`-method allows for the decision making and the `learn`-method enables the adaptive learning of the solver. To decide upon an action the solver needs a vector (`s: Array<number>`) of current observations (states) an returns the **index** of the action (`a: number`) to be executed. After the action was executed the solver takes an integer reward (`r: number`) to `learn` from the effectivity of the action.
+The solver provides primarily two methods. The `decide`-method allows for the decision making and the `learn`-method enables the adaptive learning of the solver. To decide upon an action the solver needs a vector (`s: Array<number>`) of current observations (states) and it returns the **index** of the action (`a: number`) to be executed. After the action was executed the solver takes an integer reward (`r: number`) to `learn` from the effectivity of the action.
 
 The appended scheme gives a brief overview of the concept of the solver. As seen, the `DQNSolver` is constructed with a set of hyperparameters defined via `DQNOpt` and the description of the environment defined by `DQNEnv`. The solver is then enabled to make decisions based on a set of observations (**s**). The decision making can then be influenced by providing a reward value.
 
