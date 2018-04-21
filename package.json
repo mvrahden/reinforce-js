@@ -1,7 +1,7 @@
 {
   "name": "reinforce-js",
   "version": "1.4.12",
-  "description": "Library of Reinforcement Learning Agents in Javascript (baked with Typescript). Ported, object-oriented and refactored version of Andrej Karpathy's reinforce-js (https://github.com/karpathy/reinforcejs)",
+  "description": "A collection of various machine learning solver. The library is an object-oriented approach (baked with Typescript) and tries to deliver simplified interfaces that make using the algorithms pretty simple (baked with Typescript).",
   "keywords": [
     "reinforce",
     "reinforcement",
