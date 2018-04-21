@@ -5,7 +5,7 @@
 [dqn-solver-src]: examples/dqn-solver-src.md
 [td-solver-src]: examples/td-solver-src.md
 
-**The reinforce-js library** &ndash; is a collection of multiple machine learning solver. The library is an object-oriented approach and tries to deliver simplified interfaces to abstract away the details of the algorithms (baked with [Typescript](https://github.com/Microsoft/TypeScript)). More over it is an extension of _Andrej Karpathy's_ reinforcement learning library that implements several common RL algorithms.
+**The reinforce-js library** &ndash; is a collection of various machine learning solver. The library is an object-oriented approach and tries to deliver simplified interfaces that make using the algorithms pretty easy (baked with [Typescript](https://github.com/Microsoft/TypeScript)). More over it is an extension of _Andrej Karpathy's_ reinforcement learning library that implements several common RL algorithms.
 In particular, the library currently includes:
 
 * **Deep Q-Learning** for Q-Learning with function approximation with Neural Networks ([DQNSolver Details][dqn-solver] and related [Google DeepMind Paper](https://www.nature.com/articles/nature14236))
