@@ -1,10 +1,16 @@
+# Directories
 node_modules
 examples
 docs
 src
 
 # Config Files
+.appveyor.yml
 .travis.yml
+jasmine.json
 tsconfig.json
 tslint-google.json
 tslint.json
+
+# Other Files
+TODO.md
