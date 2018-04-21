@@ -12,7 +12,7 @@ export class DQNSolver extends Solver {
   public numberOfActions: number;
 
   // Opts
-  public numberOfHiddenUnits: number;
+  public numberOfHiddenUnits: Array<number>;
 
   public readonly epsilonMax: number;
   public readonly epsilonMin: number;

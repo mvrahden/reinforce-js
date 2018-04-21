@@ -2,7 +2,7 @@ import { Opt } from '../Opt';
 
 export class DQNOpt extends Opt {
   protected trainingMode: boolean = true;
-  protected numberOfHiddenUnits: number = 100;
+  protected numberOfHiddenUnits: Array<number> = [ 100 ];
   protected epsilonMax: number = 1.0;
   protected epsilonMin: number = 0.1;
   protected epsilonDecayPeriod: number = 1e6;
@@ -20,10 +20,10 @@ export class DQNOpt extends Opt {
   protected replaySteps: number = 10;
 
   /**
-   * Sets the number of neurons in hidden layer
-   * @param numberOfHiddenUnits defaults to 100
+   * Sets the number of neurons in hidden layers
+   * @param numberOfHiddenUnits defaults to [ 100 ]
    */
-  public setNumberOfHiddenUnits(numberOfHiddenUnits: number): void {
+  public setNumberOfHiddenUnits(numberOfHiddenUnits: Array<number>): void {
     this.numberOfHiddenUnits = numberOfHiddenUnits;
   }
 
