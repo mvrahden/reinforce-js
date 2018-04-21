@@ -1,5 +1,4 @@
-import { Env } from './Env';
-import { Opt } from './Opt';
+import { Env, Opt } from './.';
 
 export abstract class Solver {
   protected env: Env;

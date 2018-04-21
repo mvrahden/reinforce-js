@@ -1,13 +1,13 @@
-import { Solver } from './Solver';
-import { Env } from './Env';
-import { Opt } from './Opt';
+import { Solver } from './solver';
+import { Env } from './env';
+import { Opt } from './opt';
 
-import { DQNSolver } from './dqn/DQNSolver';
-import { DQNOpt } from './dqn/DQNOpt';
-import { DQNEnv } from './dqn/DQNEnv';
+import { DQNSolver } from './dqn/dqn-solver';
+import { DQNOpt } from './dqn/dqn-opt';
+import { DQNEnv } from './dqn/dqn-env';
 
-import { TDSolver } from './td/TDSolver';
-import { TDOpt } from './td/TDOpt';
-import { TDEnv } from './td/TDEnv';
+import { TDSolver } from './td/td-solver';
+import { TDOpt } from './td/td-opt';
+import { TDEnv } from './td/td-env';
 
 export { Solver, Env, Opt, DQNSolver, DQNOpt, DQNEnv, TDSolver, TDOpt, TDEnv };
