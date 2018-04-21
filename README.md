@@ -67,7 +67,8 @@ Install via command line:
 npm install --save reinforce-js@latest
 ```
 
-The project directly ships with the transpiled Javascript code, Map-files and Declaration-files.
+The project directly ships with the transpiled Javascript code.
+And for TypeScript development it also contains Map-files and Declaration-files.
 
 ### Example Application
 
