@@ -24,9 +24,14 @@ Currently exposed Classes (more to be expected soon):
 * **Opt** - Generic *Options* for a Solver
 
 DQN-Solver: ([Code-Example][dqn-solver-src] and [General Information][dqn-solver])
-* **DQNSolver** - Concrete *Deep Q-Learning* Solver
-* **DQNOpt** - Concrete *Options* for DQNSolver creation
-* **DQNEnv** - Concrete *Environment* for DQNSolver creation
+* `DQNSolver` - Concrete **Deep Q-Learning Solver**
+  * This class is containing the main Deep Q-Learning algorithm of the *DeepMind* paper. On instantiation it needs to be configured with two configuration objects. It is an algorithm, which has minimum knowledge of its environment. The behavior of the algorithm can be tuned via its hyperparamters (`DQNOpt`).
+  * The Deep Q-Learning algorithm is designed to have a certain universality, since its reasoning is just depending on a environmental perception and an environmental feedback.
+  * The [learning-agents](https://mvrahden.github.io/learning-agents)-implementation shows that the DQNSolver can also be designed in such a way, that its agent has a maximum autonomy by establishing its own reward-scheme.
+* `DQNOpt` - Concrete options of `DQNSolver`
+  * This class is for the configuration of the DQNSolver. It holds all the **hyperparameter** for the DQNSolver. For the detailed initialization please see the [General Information][dqn-solver].
+* `DQNEnv` - Concrete environment of `DQNSolver`
+  * This class is for the configuration of the DQNSolver. It holds the boundary-measures of the environment, in which the DQNSolver should operate. For the detailed initialization please see the [General Information][dqn-solver].
 * **Example Application**: [Learning Agents](https://mvrahden.github.io/learning-agents) (GitHub Page)
 
 TD-Solver: ([Code-Example][td-solver-src])
