@@ -1,4 +1,4 @@
-import { Env } from "../Env";
+import { Env } from './../.';
 
 export class TDEnv extends Env {
 

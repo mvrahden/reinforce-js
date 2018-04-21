@@ -1,3 +1,3 @@
-import { Env } from '../index';
+import { Env } from './../.';
 
 export class DQNEnv extends Env {}

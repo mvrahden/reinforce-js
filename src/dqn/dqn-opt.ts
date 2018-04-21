@@ -1,4 +1,4 @@
-import { Opt } from '../Opt';
+import { Opt } from './../.';
 
 export class DQNOpt extends Opt {
   protected trainingMode: boolean = true;

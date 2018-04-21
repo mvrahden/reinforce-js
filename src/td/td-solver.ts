@@ -1,8 +1,6 @@
 import { Utils } from 'recurrent-js';
 
-import { Solver } from './../Solver';
-import { TDEnv } from './TDEnv';
-import { TDOpt } from './TDOpt';
+import { Solver, TDEnv, TDOpt } from './../.';
 
 export class TDSolver extends Solver {
   protected readonly alpha: number;

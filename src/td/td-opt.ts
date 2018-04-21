@@ -1,4 +1,4 @@
-import { Opt } from "../Opt";
+import { Opt } from './../.';
 
 export class TDOpt extends Opt {
   protected alpha: number = 0.01;

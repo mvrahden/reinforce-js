@@ -1,8 +1,6 @@
 import { Net, Graph, Mat, Utils } from 'recurrent-js';
 
-import { Solver } from '../Solver';
-import { Env } from '../Env';
-import { DQNOpt } from './DQNOpt';
+import { Solver, Env, DQNOpt } from './../.';
 import { SarsaExperience } from './sarsa';
 
 export class DQNSolver extends Solver {
