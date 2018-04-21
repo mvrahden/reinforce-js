@@ -15,18 +15,6 @@ In particular, the library currently includes:
 
 ## Use as Project Dependency
 
-### How to install as a dependency:
-
-Download available `@npm`: [reinforce-js](https://www.npmjs.com/package/reinforce-js)
-
-Install via command line:
-
-```
-npm install --save reinforce-js
-```
-
-The project directly ships with the transpiled Javascript code, Map-files and Declaration-files.
-
 ### How to use the Library in Production:
 
 Currently exposed Classes (more to be expected soon):
@@ -68,6 +56,18 @@ const DQNSolver = require('reinforce-js').DQNSolver;
 const DQNOpt = require('reinforce-js').DQNOpt;
 const DQNEnv = require('reinforce-js').DQNEnv;
 ```
+
+### How to install as a dependency:
+
+Download available `@npm`: [reinforce-js](https://www.npmjs.com/package/reinforce-js)
+
+Install via command line:
+
+```
+npm install --save reinforce-js@latest
+```
+
+The project directly ships with the transpiled Javascript code, Map-files and Declaration-files.
 
 ### Example Application
 
