@@ -24,14 +24,12 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "prepare": "npm run build",
-    "test": "./node_modules/.bin/jasmine",
-    "pretest": "npm run build:test",
-    "build:test": "tsc -p ./tsconfig.spec.json",
-    "prebuild:test": "npm run build",
-    "build": "tsc -p .",
-    "prebuild": "rimraf dist & rimraf spec/dist",
-    "posttest": "rimraf spec/dist"
+    "prepare": "npm run test",
+    "test": "./node_modules/.bin/jasmine --config=jasmine.json",
+    "pretest": "npm run build",
+    "build": "./node_modules/.bin/tsc -p .",
+    "prebuild": "./node_modules/.bin/rimraf dist",
+    "posttest": "./node_modules/.bin/rimraf dist/*.spec.* dist/*.doubles.*"
   },
   "author": "Menno van Rahden",
   "homepage": "https://github.com/mvrahden/reinforce-js#readme",
