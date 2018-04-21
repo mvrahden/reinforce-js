@@ -1,3 +1,10 @@
 node_modules
-test
+examples
+docs
 src
+
+# Config Files
+.travis.yml
+tsconfig.json
+tslint-google.json
+tslint.json
