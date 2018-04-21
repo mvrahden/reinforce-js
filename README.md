@@ -13,8 +13,6 @@ In particular, the library currently includes:
 * (Tabular) **Temporal Difference Learning** (SARSA/Q-Learning)
 * **Stochastic/Deterministic Policy Gradients** and Actor Critic architectures for dealing with continuous action spaces. (_very alpha, likely buggy or at the very least finicky and inconsistent_)
 
-For further Information see the [reinforce-js](https://github.com/karpathy/reinforcejs) repository.
-
 ## Use as Project Dependency
 
 ### How to install as a dependency:
