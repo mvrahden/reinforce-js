@@ -13,17 +13,20 @@ In particular, the library currently includes:
 * (Tabular) **Temporal Difference Learning** (SARSA/Q-Learning)
 * **Stochastic/Deterministic Policy Gradients** and Actor Critic architectures for dealing with continuous action spaces. (_very alpha, likely buggy or at the very least finicky and inconsistent_)
 
-## Use as Project Dependency
+## For Production Use
 
-### How to use the Library in Production:
+### What does the Library offer?
 
-Currently exposed Classes (more to be expected soon):
+Currently exposed Classes:
 
 * **Solver** - Generic Solver Interface
 * **Env** - Generic *Environment* for a Solver
 * **Opt** - Generic *Options* for a Solver
 
-DQN-Solver: ([Code-Example][dqn-solver-src] and [General Information][dqn-solver])
+##### DQN-Solver
+
+[Code-Example][dqn-solver-src] and [General Information][dqn-solver]
+
 * `DQNSolver` - Concrete **Deep Q-Learning Solver**
   * This class is containing the main Deep Q-Learning algorithm of the *DeepMind* paper. On instantiation it needs to be configured with two configuration objects. It is an algorithm, which has minimum knowledge of its environment. The behavior of the algorithm can be tuned via its hyperparamters (`DQNOpt`).
   * The Deep Q-Learning algorithm is designed to have a certain universality, since its reasoning is just depending on a environmental perception and an environmental feedback.
@@ -34,7 +37,10 @@ DQN-Solver: ([Code-Example][dqn-solver-src] and [General Information][dqn-solver
   * This class is for the configuration of the DQNSolver. It holds the boundary-measures of the environment, in which the DQNSolver should operate. For the detailed initialization please see the [General Information][dqn-solver].
 * **Example Application**: [Learning Agents](https://mvrahden.github.io/learning-agents) (GitHub Page)
 
-TD-Solver: ([Code-Example][td-solver-src])
+#### TD-Solver 
+
+[Code-Example][td-solver-src]
+
 * **TDSolver** - Concrete *Temporal Difference* Solver
 * **TDOpt** - Concrete *Options* for TDSolver creation
 * **TDEnv** - Concrete *Environment* for TDSolver creation
@@ -50,18 +56,6 @@ Planned to be implemented:
 * **DeterministPGSolver** - Concrete *Deterministic Policy Gradient* Solver
 * **DeterministPGOpt** - Concrete *Options* for DeterministPGSolver creation
 
-These classes can be imported from this `npm` module, e.g.:
-```typescript
-import { DQNSolver, DQNOpt, DQNEnv } from 'reinforce-js';
-```
-
-For JavaScript usage `require` classes from this `npm` module as follows:
-```javascript
-const DQNSolver = require('reinforce-js').DQNSolver;
-const DQNOpt = require('reinforce-js').DQNOpt;
-const DQNEnv = require('reinforce-js').DQNEnv;
-```
-
 ### How to install as a dependency:
 
 Download available `@npm`: [reinforce-js](https://www.npmjs.com/package/reinforce-js)
@@ -75,9 +69,23 @@ npm install --save reinforce-js@latest
 The project directly ships with the transpiled Javascript code.
 And for TypeScript development it also contains Map-files and Declaration-files.
 
+### How to import?
+
+These classes can be imported from this `npm` module, e.g.:
+```typescript
+import { DQNSolver, DQNOpt, DQNEnv } from 'reinforce-js';
+```
+
+For JavaScript usage `require` classes from this `npm` module as follows:
+```javascript
+const DQNSolver = require('reinforce-js').DQNSolver;
+const DQNOpt = require('reinforce-js').DQNOpt;
+const DQNEnv = require('reinforce-js').DQNEnv;
+```
+
 ### Example Application
 
-See [Learning Agents](https://mvrahden.github.io/learning-agents) (GitHub Page).
+For the DQN-Solver please visit [Learning Agents](https://mvrahden.github.io/learning-agents) (GitHub Page).
 
 ## For Contributors
 
