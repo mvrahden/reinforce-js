@@ -5,7 +5,7 @@ This is a working example of how to use the `DQNSolver`-Class in your Project. F
 - what all the single values stand for and
 - how the solver can action on it's environment,
 
-please also have a look [here](../../examples/dqn-solver.md).
+please also have a look [here](./dqn-solver.md).
 
 ```typescript
 // TypeScript
