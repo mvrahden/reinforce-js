@@ -18,7 +18,7 @@ import { DQNSolver, DQNOpt, DQNEnv } from 'reinforce-js';
 
 const width = 400;
 const height = 400;
-const env = new DQNEnv(width, height);
+const env = new DQNEnv(width, height, 100, 4);
 
 const opt = new DQNOpt();
 opt.setTrainingMode(true);
@@ -37,4 +37,15 @@ opt.setReplaySteps(5);
 
 // outfit solver with environment complexity and specs
 const dqnSolver = new DQNSolver(env, opt);
+
+const state = [ /* Array with numerical values and length of 100 as configured in DQNEnv */ ];
+
+const action = dqnSolver.decide(state); // takes state, gives preferred action (as index from 0 to 3)
+
+/*
+Calculate some Reward, e.g.:
+const reward = 0.9;
+*/
+
+dqnSolver.learn(reward);
 ```
