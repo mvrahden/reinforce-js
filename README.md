@@ -23,7 +23,7 @@ Currently exposed Classes:
 * **Env** - Generic *Environment* for a Solver
 * **Opt** - Generic *Options* for a Solver
 
-##### DQN-Solver
+#### DQN-Solver
 
 [Code-Example][dqn-solver-src] and [General Information][dqn-solver]
 
