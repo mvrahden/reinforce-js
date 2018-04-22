@@ -18,7 +18,9 @@ import { DQNSolver, DQNOpt, DQNEnv } from 'reinforce-js';
 
 const width = 400;
 const height = 400;
-const env = new DQNEnv(width, height, 100, 4);
+const numberOfStates = 20;
+const numberOfActions = 4;
+const env = new DQNEnv(width, height, numberOfStates, numberOfActions);
 
 const opt = new DQNOpt();
 opt.setTrainingMode(true);
@@ -35,17 +37,26 @@ opt.setExperienceSize(1e6);
 opt.setReplayInterval(5);
 opt.setReplaySteps(5);
 
-// outfit solver with environment complexity and specs
+/*
+Outfit solver with environment complexity and specs.
+After configuration it's ready to train its untrained Q-Network and learn from SARSA experiences.
+*/
 const dqnSolver = new DQNSolver(env, opt);
 
-const state = [ /* Array with numerical values and length of 100 as configured in DQNEnv */ ];
-
-const action = dqnSolver.decide(state); // takes state, gives preferred action (as index from 0 to 3)
+/*
+Determine a state, e.g.:
+*/
+const state = [ /* Array with numerical values and length of 20 as configured via numberOfStates */ ];
 
 /*
-Calculate some Reward, e.g.:
-const reward = 0.9;
+Now inject state and receive the preferred action as index from 0 to 3 as configured via numberOfActions.
 */
+const action = dqnSolver.decide(state);
+
+/*
+Now calculate some Reward and let the Solver learn from it, e.g.:
+*/
+const reward = 0.9;
 
 dqnSolver.learn(reward);
 ```
