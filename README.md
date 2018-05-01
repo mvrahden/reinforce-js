@@ -1,9 +1,9 @@
 # reinforce-js
 [![js-google-style](https://img.shields.io/badge/code%20style-google-blue.svg)](https://google.github.io/styleguide/jsguide.html)
 
-[dqn-solver]: examples/dqn-solver.md
-[dqn-solver-src]: examples/dqn-solver-src.md
-[td-solver-src]: examples/td-solver-src.md
+[dqn-solver]: https://github.com/mvrahden/reinforce-js/blob/master/examples/dqn-solver.md
+[dqn-solver-src]: https://github.com/mvrahden/reinforce-js/blob/master/examples/dqn-solver-src.md
+[td-solver-src]: https://github.com/mvrahden/reinforce-js/blob/master/examples/td-solver-src.md
 
 **The reinforce-js library** &ndash; is a collection of various machine learning solver. The library is an object-oriented approach and tries to deliver simplified interfaces that make using the algorithms pretty easy (baked with [Typescript](https://github.com/Microsoft/TypeScript)). More over it is an extension of _Andrej Karpathy's_ reinforcement learning library that implements several common RL algorithms.
 In particular, the library currently includes:
