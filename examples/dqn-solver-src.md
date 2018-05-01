@@ -24,7 +24,7 @@ const env = new DQNEnv(width, height, numberOfStates, numberOfActions);
 
 const opt = new DQNOpt();
 opt.setTrainingMode(true);
-opt.setNumberOfHiddenUnits(100);
+opt.setNumberOfHiddenUnits([100]);
 opt.setEpsilonDecay(1.0, 0.1, 1e6);
 opt.setEpsilon(0.05);
 opt.setGamma(0.9);

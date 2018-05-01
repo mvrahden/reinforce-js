@@ -14,7 +14,7 @@ The construction of a solver requires instances of the Classes `DQNEnv` and `DQN
   - `numberOfStates` describes the length of the Vector (**s**) of observations
   - `numberOfActions` describes the number of potential actions to choose from
 - **DQNOpt** holds all the hyperparamters for the *learning* and *decision making*.
-  - `numberOfHiddenUnits`: depth of the neural network
+  - `numberOfHiddenUnits`: width and depth of the neural network. Array length describes the number of hidden layers (depth) and the numerical values describe the length of each layer (width).
   - `trainingMode`: mode of training, defines the explorative behaviour of the solver (decaying or stable)
   - `epsilon`: static exploration rate (during non-training mode)
   - `epsilonMax`, `epsilonMin`, `epsilonDecayPeriod`: linear decay of exploration during training mode
