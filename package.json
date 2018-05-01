@@ -1,6 +1,6 @@
 {
   "name": "reinforce-js",
-  "version": "1.4.13",
+  "version": "1.4.14",
   "description": "A collection of various machine learning solver. The library is an object-oriented approach (baked with Typescript) and tries to deliver simplified interfaces that make using the algorithms pretty simple.",
   "keywords": [
     "reinforce",
