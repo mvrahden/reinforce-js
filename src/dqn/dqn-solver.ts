@@ -196,7 +196,7 @@ export class DQNSolver extends Solver {
 
   protected determineActionVector(graph: Graph, stateVector: Mat): Mat {
     const a2mat = this.net.forward(stateVector, graph);
-    this.backupGraph(graph); // back this up. Kind of hacky isn't it
+    this.backupGraph(graph); // back this up
     return a2mat;
   }
 
