@@ -7,6 +7,8 @@ This is a working example of how to use the `DQNSolver`-Class in your Project. F
 
 please also have a look [here](./dqn-solver.md).
 
+To see a live example visit [learning-agents](https://mvrahden.github.io/learning-agents/).
+
 ```typescript
 // TypeScript
 import { DQNSolver, DQNOpt, DQNEnv } from 'reinforce-js';
