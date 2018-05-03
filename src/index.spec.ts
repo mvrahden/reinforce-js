@@ -8,7 +8,7 @@ describe('Given the imports, the example code should execute just fine', () => {
   const numberOfStates = 20;
   const numberOfActions = 4;
 
-  // Common Hyperparameters
+  // Common Hyperparameter
   const alpha = 0.005;
   const epsilon = 0.05;
   const gamma = 0.9;
@@ -41,7 +41,7 @@ describe('Given the imports, the example code should execute just fine', () => {
       /*
       Determine a state, e.g.:
       */
-      const state = [ /* Array with numerical values and length of 20 as configured via numberOfStates */];
+      const state = [ /* Array with numerical values and length of 20 as configured via numberOfStates */ ];
 
       /*
       Now inject state and receive the preferred action as index from 0 to 3 as configured via numberOfActions.
