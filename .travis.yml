@@ -18,7 +18,9 @@ matrix:
   include:  # Test additional versions in Matrix NodeJS < 8.0 && >= 6.0
     - node_js: "node"
       env: PRETEST=true
-    # - node_js: "9.3.0" # same results as 9.0, 9.1, 9.2
+    # - node_js: "10.0.0" #
+    #   env: TEST=true ALLOW_FAILURE=true
+    # - node_js: "9.11.1" # same results as 8.10, 8.11, 9.0, 9.1, 9.2, 9.3, 9.4, 9.5, 9.6, 9.7, 9.8, 9.9, 9.10., 9.11
     #   env: TEST=true ALLOW_FAILURE=true
     # - node_js: "8.9.4" # same results as 8.7, 8.8, 8.9
     #   env: TEST=true ALLOW_FAILURE=true
