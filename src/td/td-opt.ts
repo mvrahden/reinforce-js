@@ -82,13 +82,13 @@ export class TDOpt extends Opt {
    * Sets the number of Planning Steps
    * @param numberOfPlanningSteps value from [0,1); defaults to 0.01
    */
-  public setnumberOfPlanningSteps(numberOfPlanningSteps: number): void {
+  public setNumberOfPlanningSteps(numberOfPlanningSteps: number): void {
     this.numberOfPlanningSteps = numberOfPlanningSteps;
   }
 
   /**
-   * Sets the update target function
-   * @param update value from [0,1); defaults to 0.01
+   * Sets the update target function.
+   * @param update either 'qlearn' or 'sarsa'; defaults to 'qlearn'
    */
   public setUpdate(update: string): void {
     this.update = update;
