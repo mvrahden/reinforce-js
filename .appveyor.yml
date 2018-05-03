@@ -1,0 +1,48 @@
+platform:
+  - x86
+  - x64
+# Install scripts. (runs after repo cloning)
+install:
+  # Get the latest stable version of Node 0.STABLE.latest
+  - ps: Install-Product node $env:nodejs_version
+  # Output useful info for debugging.
+  - node --version
+  - npm --version
+  # Typical npm stuff.
+  - npm install
+  - npm test
+# Post-install test scripts.
+# test_script:
+#   # Output useful info for debugging.
+#   - node --version
+#   - npm --version
+build: off
+cache: node_modules
+matrix:
+  fast_finish: true
+environment:
+# - my_var1: value1
+  matrix:
+    - nodejs_version: "10.0.0"  # 
+    - nodejs_version: "9.11.1"  # same results as 8.10.x, 8.11.x, 9.0.x, 9.1.x, 9.2.x, 9.3.x, 9.4.x, 9.5.x, 9.6.x, 9.7.x, 9.8.x, 9.9.x, 9.10.x, 9.11.x
+    - nodejs_version: "8.9.4"   # same results as 8.7.x, 8.8.x, 8.9.x
+    - nodejs_version: "8.6.0"   # same results as 8.3.x, 8.4.x, 8.5.x
+    - nodejs_version: "8.2.1"   # same results as 8.0.x, 8.1.x, 8.2.x
+    - nodejs_version: "7.10.1"  # same results as 7.6.x, 7.7.x, 7.8.x, 7.9.x, 7.10.x
+    - nodejs_version: "7.5.0"   # same results as 7.1.x, 7.2.x, 7.3.x, 7.4.x
+    - nodejs_version: "6.12.3"  # same results as 6.5.x, 6.6.x, 6.7.x, 6.8.x, 6.9.x, 6.10.x, 6.11.x, 6.12.x
+    - nodejs_version: "6.4.0"   # same results as 6.0.x, 6.1.x, 6.2.x, 6.3.x
+skip_commits:
+  files:
+    - docs/*
+    - examples/*
+    - .gitignore
+    - .npmignore
+    - .travis.yml
+    - CODE_OF_CONDUCT.md
+    - LICENSE
+    - CONTRIBUTING.md
+    - PULL_REQUEST_TEMPLATE.md
+    - README.md
+    - TODO.md
+    - tslint*
