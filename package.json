@@ -51,6 +51,6 @@
     "typescript": "^2.7.1"
   },
   "dependencies": {
-    "recurrent-js": "^1.5.7"
+    "recurrent-js": "^1.5.8"
   }
 }
