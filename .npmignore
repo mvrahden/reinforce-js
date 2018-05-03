@@ -1,4 +1,5 @@
 # Directories
+.github
 node_modules
 examples
 docs
@@ -7,7 +8,10 @@ src
 # Config Files
 .appveyor.yml
 .travis.yml
+CODE_OF_CONDUCT.md
+CONTRIBUTING.md
 jasmine.json
+PULL_REQUEST_TEMPLATE.md
 tsconfig.json
 tslint-google.json
 tslint.json
