@@ -1,5 +1,5 @@
 # reinforce-js
-[![Build Status](https://travis-ci.org/mvrahden/recurrent-js.svg?branch=master)](https://travis-ci.org/mvrahden/recurrent-js)
+[![Build Status](https://travis-ci.org/mvrahden/reinforce-js.svg?branch=master)](https://travis-ci.org/mvrahden/reinforce-js)
 [![Build status](https://ci.appveyor.com/api/projects/status/wpi6tohcfap8iei7/branch/master?svg=true)](https://ci.appveyor.com/project/mvrahden/reinforce-js/branch/master)
 [![js-google-style](https://img.shields.io/badge/code%20style-google-blue.svg)](https://google.github.io/styleguide/jsguide.html)
 
