@@ -89,14 +89,20 @@ const DQNEnv = require('reinforce-js').DQNEnv;
 
 For the DQN-Solver please visit [Learning Agents](https://mvrahden.github.io/learning-agents) (GitHub Page).
 
-## For Contributors
+## Community Contribution
 
-1. `Clone` this project to a working directory.
-2. `npm install` to setup the development dependencies.
-3. To compile the codebase:
+Everybody is more than welcome to contribute and extend the functionality!
+
+Please feel free to contribute to this project as much as you wish to.
+
+1. clone from GitHub via `git clone https://github.com/mvrahden/treasurer.git`
+2. `cd` into the directory and `npm install` for initialization
+3. Try to `npm run test`. If everything is green, you're ready to go :sunglasses:
+
+Before triggering a pull-request, please make sure that you've run all the tests via the *testing command*:
 
 ```
-tsc -p .
+npm run test
 ```
 
 This project relies on Visual Studio Codes built-in Typescript linting facilities. Let's follow primarily the [Google TypeScript Style-Guide](https://github.com/google/ts-style) through the included *tslint-google.json* configuration file.
