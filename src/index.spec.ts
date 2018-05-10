@@ -76,6 +76,23 @@ describe('Given the imports, the example code should execute just fine', () => {
 
       // outfit solver with environment complexity and specs
       const tdSolver = new TDSolver(env, opt);
+
+      /*
+      Determine a state, e.g.:
+      */
+      const state = 1;
+
+      /*
+      Now inject state and receive the preferred action as index from 0 to 3 as configured via numberOfActions.
+      */
+      const action = tdSolver.decide(state);
+      
+      /*
+      Now calculate some Reward and let the Solver learn from it, e.g.:
+      */
+      const reward = 0.9;
+
+      tdSolver.learn(1);
     });
   });
 });
