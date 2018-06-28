@@ -151,7 +151,7 @@ export class DQNSolver extends Solver {
     } else {
       // Q function
       const actionVector = this.forwardQ(stateVector);
-      actionIndex = Utils.maxi(actionVector.w); // returns index of argmax action 
+      actionIndex = Utils.argmax(actionVector.w); // returns index of argmax action 
     }
     return actionIndex;
   }
@@ -259,13 +259,13 @@ export class DQNSolver extends Solver {
   protected getTargetQ(s1: Mat, r0: number): number {
     // want: Q(s,a) = r + gamma * max_a' Q(s',a')
     const targetActionVector = this.forwardQ(s1);
-    const targetActionIndex = Utils.maxi(targetActionVector.w);
+    const targetActionIndex = Utils.argmax(targetActionVector.w);
     const qMax = r0 + this.gamma * targetActionVector.w[targetActionIndex];
     return qMax;
   }
 
   /**
-   * Clipp loss to interval of [-delta, delta], e.g. [-1, 1] (Derivative Huber Loss)
+   * Clip loss to interval of [-delta, delta], e.g. [-1, 1] (Derivative Huber Loss)
    * @returns {number} limited tdError
    */
   protected clipLoss(loss: number): number {
