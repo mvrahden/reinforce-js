@@ -25,10 +25,6 @@ In particular, the library currently includes:
 
 Currently exposed Classes:
 
-* **Solver** - Generic Solver Interface
-* **Env** - Generic *Environment* for a Solver
-* **Opt** - Generic *Options* for a Solver
-
 #### DQN-Solver
 
 [Code-Example][dqn-solver-src] and [General Information][dqn-solver]
