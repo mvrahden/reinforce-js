@@ -20,10 +20,11 @@ export class DQNOpt extends Opt {
   protected replaySteps: number = 10;
 
   /**
-   * Sets the number of neurons in hidden layers
+   * Sets the number of neurons in hidden layer (currently only 1-d layer accepted)
    * @param numberOfHiddenUnits defaults to [ 100 ]
    */
   public setNumberOfHiddenUnits(numberOfHiddenUnits: Array<number>): void {
+    // TODO: Add DNN support
     this.numberOfHiddenUnits = numberOfHiddenUnits;
   }
 
