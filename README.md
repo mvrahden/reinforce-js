@@ -7,7 +7,11 @@
 [dqn-solver-src]: https://github.com/mvrahden/reinforce-js/blob/master/examples/dqn-solver-src.md
 [td-solver-src]: https://github.com/mvrahden/reinforce-js/blob/master/examples/td-solver-src.md
 
-**The reinforce-js library** &ndash; is a collection of various machine learning solver. The library is an object-oriented approach and tries to deliver simplified interfaces that make using the algorithms pretty easy (baked with [Typescript](https://github.com/Microsoft/TypeScript)). More over it is an extension of _Andrej Karpathy's_ reinforcement learning library that implements several common RL algorithms.
+**Call For Volunteers:** Due to my lack of time, I'm desperately looking for voluntary help. Should you be interested in building reinforcement agents (even though you're a newbie) and willing to develop this educational project a little further, please contact me :) There are some points on the agenda, that I'd still like to see implemented to make this project a nice library for abstract educational purposes.
+
+> INACTIVE: Due to lack of time and help
+
+**reinforce-js** &ndash; a collection of various simple reinforcement learning solver. The library is an object-oriented approach and tries to deliver simplified interfaces that make using the algorithms pretty easy (baked with [Typescript](https://github.com/Microsoft/TypeScript)). More over it is an extension of _Andrej Karpathy's_ reinforcement learning library that implements several common RL algorithms.
 In particular, the library currently includes:
 
 * **Deep Q-Learning** for Q-Learning with function approximation with Neural Networks ([DQNSolver Details][dqn-solver] and related [Google DeepMind Paper](https://www.nature.com/articles/nature14236))
@@ -39,7 +43,7 @@ Currently exposed Classes:
   * This class is for the configuration of the DQNSolver. It holds the boundary-measures of the environment, in which the DQNSolver should operate. For the detailed initialization please see the [General Information][dqn-solver].
 * **Example Application**: [Learning Agents](https://mvrahden.github.io/learning-agents) (GitHub Page)
 
-#### TD-Solver 
+#### TD-Solver (not tested)
 
 [Code-Example][td-solver-src]
 
@@ -95,7 +99,7 @@ Everybody is more than welcome to contribute and extend the functionality!
 
 Please feel free to contribute to this project as much as you wish to.
 
-1. clone from GitHub via `git clone https://github.com/mvrahden/treasurer.git`
+1. clone from GitHub via `git clone https://github.com/mvrahden/reinforce-js.git`
 2. `cd` into the directory and `npm install` for initialization
 3. Try to `npm run test`. If everything is green, you're ready to go :sunglasses:
 
