@@ -1,6 +1,6 @@
 {
   "name": "reinforce-js",
-  "version": "1.4.17",
+  "version": "1.5.0",
   "description": "A collection of various reinforcement learning solver. The library is an object-oriented approach (baked with Typescript) and tries to deliver simplified interfaces that make using the algorithms pretty simple.",
   "keywords": [
     "reinforce",
