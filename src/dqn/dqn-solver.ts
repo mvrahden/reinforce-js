@@ -1,4 +1,4 @@
-import { Net, Graph, Mat, Utils } from 'recurrent-js';
+import { Net, Graph, Mat, Utils, NetOpts } from 'recurrent-js';
 
 import { Solver, Env, DQNOpt } from './../.';
 import { SarsaExperience } from './sarsa';
@@ -66,10 +66,12 @@ export class DQNSolver extends Solver {
     this.numberOfStates = this.env.get('numberOfStates');
     this.numberOfActions = this.env.get('numberOfActions');
 
-    const netOpts = {
-      inputSize: this.numberOfStates,
-      hiddenUnits: this.numberOfHiddenUnits,
-      outputSize: this.numberOfActions
+    const netOpts: NetOpts = {
+      architecture: {
+        inputSize: this.numberOfStates,
+        hiddenUnits: this.numberOfHiddenUnits,
+        outputSize: this.numberOfActions
+      }
     };
     this.net = new Net(netOpts);
 
@@ -177,7 +179,7 @@ export class DQNSolver extends Solver {
    * @return Matrix (Vector) with predicted actions values
    */
   protected forwardQ(stateVector: Mat | null): Mat {
-    const graph = new Graph(false);
+    const graph = new Graph();  // without backprop option
     const a2Mat = this.determineActionVector(graph, stateVector);
     return a2Mat;
   }
@@ -188,7 +190,8 @@ export class DQNSolver extends Solver {
    * @return Matrix (Vector) with predicted actions values
    */
   protected backwardQ(stateVector: Mat | null): Mat {
-    const graph = new Graph(true);  // with backprop option
+    const graph = new Graph();
+    graph.memorizeOperationSequence(true);  // with backprop option
     const a2Mat = this.determineActionVector(graph, stateVector);
     return a2Mat;
   }
