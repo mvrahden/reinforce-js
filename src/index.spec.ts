@@ -14,6 +14,7 @@ describe('Given the imports, the example code should execute just fine', () => {
   const gamma = 0.9;
 
   describe('DQNSolver:', () => {
+
     it('Sample code', () => {
       const env = new DQNEnv(width, height, numberOfStates, numberOfActions);
 
@@ -55,10 +56,10 @@ describe('Given the imports, the example code should execute just fine', () => {
 
       dqnSolver.learn(reward);
     });
-    
   });
 
   describe('TDSolver:', () => {
+
     it('Sample code', () => {
       const env = new TDEnv(width, height, numberOfStates, numberOfActions);
 
